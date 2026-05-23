@@ -1,4 +1,3 @@
-# GPS-VanTaxi-test2
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,6 +37,12 @@
 
         /* Custom Drop Markers - SOLID COLORS */
         .red-man-icon { font-size: 34px; text-align: center; line-height: 34px; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.6)); }
+        .police-officer-icon { font-size: 36px; text-align: center; line-height: 36px; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.6)); }
+        
+        /* DYNAMIC CAUTION MARKER ICONS */
+        .caution-traffic-icon { font-size: 26px; text-align: center; line-height: 26px; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.6)); white-space: nowrap; }
+        .caution-accident-icon { font-size: 34px; text-align: center; line-height: 34px; filter: drop-shadow(0px 2px 5px rgba(0,0,0,0.6)); }
+        .caution-closure-icon { font-size: 34px; text-align: center; line-height: 34px; filter: drop-shadow(0px 2px 5px rgba(0,0,0,0.6)); }
         
         /* Driving Selection Popups - SOLID WHITE BACKGROUND FOUNDATIONS */
         .driver-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 22px; border-radius: 16px; z-index: 2000; box-shadow: 0 14px 40px rgba(0,0,0,0.5); background: #ffffff !important; border: 4px solid #1c1c1e; }
@@ -81,19 +86,7 @@
             align-items: center; 
             justify-content: space-between; 
         }
-        .btn-camera-select.selected-cam { 
-            background: #1e6b30 !important; 
-            border-color: #ffffff !important; 
-        }
-        
-        .cam-display-box { display: none; width: 100%; margin-top: 15px; border-top: 2px dashed #e5e5ea; padding-top: 15px; }
-        .cam-img-frame { width: 100%; height: auto; border-radius: 8px; border: 2px solid #1c1c1e; background: #eee; display: block; cursor: zoom-in; touch-action: pan-y; }
         .btn-close-cam { background: #1c1c1e; color: white; width: 100%; margin-top: 12px; padding: 12px; border-radius: 8px; font-weight: 900; font-size: 1rem; border: none; cursor: pointer; text-transform: uppercase; } 
-
-        /* FULL SCREEN LIGHTBOX WINDOW */
-        .fullscreen-lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000000; z-index: 3000; justify-content: center; align-items: center; }
-        .fullscreen-lightbox img { width: 100%; height: 100%; object-fit: contain; }
-        .btn-close-lightbox { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.25); color: white; border: 2px solid white; border-radius: 50%; width: 50px; height: 50px; font-size: 1.5rem; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
 <body> 
@@ -120,30 +113,19 @@
     <div id="camera-menu-pop" class="driver-modal cam-list-grid">
         <span class="modal-title">Street View Cameras</span>
         <div class="grid-options" id="camera-list-options">
-            <button class="btn-camera-select full-width-btn" onclick="toggleLiveCameraFeed('https://trafficcams.vancouver.ca/BurrardCornwall4.htm')">Burrard and Cornwall</button>
-            <button class="btn-camera-select full-width-btn" onclick="toggleLiveCameraFeed('https://trafficcams.vancouver.ca/cambiebridge.htm')">Cambie Bridge</button>
-            <button class="btn-camera-select full-width-btn" onclick="toggleLiveCameraFeed('https://trafficcams.vancouver.ca/granvilleHoweOnRamp.htm')">Granville Bridge</button>
-            <button class="btn-camera-select full-width-btn" onclick="toggleLiveCameraFeed('https://trafficcams.vancouver.ca/granville70th.htm')">Granville and 70th Avenue</button>
-            <button class="btn-camera-select full-width-btn" onclick="toggleLiveCameraFeed('https://trafficcams.vancouver.ca/granvillerobson.htm')">Granville and Robson</button>
-            <button class="btn-camera-select full-width-btn" onclick="toggleLiveCameraFeed('https://trafficcams.vancouver.ca/hastings.htm')">Hastings and Boundary Rd.</button>
-            <button class="btn-camera-select full-width-btn" onclick="toggleLiveCameraFeed('https://trafficcams.vancouver.ca/transcanada01.htm')">HWY 1 and 1st Ave</button>
-            <button class="btn-camera-select full-width-btn" onclick="toggleLiveCameraFeed('https://trafficcams.vancouver.ca/knightMarineBridge.htm')">Knight Street Bridge</button>
-            <button class="btn-camera-select full-width-btn" onclick="toggleLiveCameraFeed('https://trafficcams.vancouver.ca/oak4.htm')">Oak and 70th</button>
-            <button class="btn-camera-select full-width-btn" onclick="toggleLiveCameraFeed('https://trafficcams.vancouver.ca/cameraimages/BeattyDunsmuirEast.jpg')">Viaduct Westbound</button>
-            <button class="btn-camera-select full-width-btn" onclick="toggleLiveCameraFeed('https://trafficcams.vancouver.ca/denman3.htm')">W Georgia and Denman st.</button>
-        </div>
-        
-        <div id="live-cam-display-box" class="cam-display-box">
-            <img id="hud-cam-feed" class="cam-img-frame" src="" alt="Live Traffic Feed Loading..." onclick="launchFullscreenViewer()" />
-            <div style="text-align:center; font-size:11px; margin-top:5px; font-weight:bold; color:#666;">SWIPE LEFT/RIGHT TO SWITCH • TAP FOR FULLSCREEN</div>
+            <button class="btn-camera-select full-width-btn" onclick="openLiveCameraTab('https://trafficcams.vancouver.ca/BurrardCornwall4.htm')">Burrard and Cornwall</button>
+            <button class="btn-camera-select full-width-btn" onclick="openLiveCameraTab('https://trafficcams.vancouver.ca/cambiebridge.htm')">Cambie Bridge</button>
+            <button class="btn-camera-select full-width-btn" onclick="openLiveCameraTab('https://trafficcams.vancouver.ca/granvilleHoweOnRamp.htm')">Granville Bridge</button>
+            <button class="btn-camera-select full-width-btn" onclick="openLiveCameraTab('https://trafficcams.vancouver.ca/granville70th.htm')">Granville and 70th Avenue</button>
+            <button class="btn-camera-select full-width-btn" onclick="openLiveCameraTab('https://trafficcams.vancouver.ca/granvillerobson.htm')">Granville and Robson</button>
+            <button class="btn-camera-select full-width-btn" onclick="openLiveCameraTab('https://trafficcams.vancouver.ca/hastings.htm')">Hastings and Boundary Rd.</button>
+            <button class="btn-camera-select full-width-btn" onclick="openLiveCameraTab('https://trafficcams.vancouver.ca/transcanada01.htm')">HWY 1 and 1st Ave</button>
+            <button class="btn-camera-select full-width-btn" onclick="openLiveCameraTab('https://trafficcams.vancouver.ca/knightMarineBridge.htm')">Knight Street Bridge</button>
+            <button class="btn-camera-select full-width-btn" onclick="openLiveCameraTab('https://trafficcams.vancouver.ca/oak4.htm')">Oak and 70th</button>
+            <button class="btn-camera-select full-width-btn" onclick="openLiveCameraTab('https://trafficcams.vancouver.ca/denman3.htm')">W Georgia and Denman st.</button>
         </div>
         
         <button class="btn-close-cam" onclick="hideModals()">Close Menu</button>
-    </div> 
-
-    <div id="lightbox-viewer" class="fullscreen-lightbox">
-        <button class="btn-close-lightbox" onclick="exitFullscreenViewer()">✕</button>
-        <img id="lightbox-target-img" src="" alt="Full Screen Display" />
     </div> 
 
     <div id="flag-pop" class="driver-modal flag-grid">
@@ -187,9 +169,9 @@
     <div id="police-pop" class="driver-modal police-grid">
         <span class="modal-title">Police Threat Zone</span>
         <div class="grid-options">
-            <button class="btn-police-opt full-width-btn" onclick="selectPoliceType('Radar')">Radar</button>
-            <button class="btn-police-opt full-width-btn" onclick="selectPoliceType('Emergency')">Emergency</button>
-            <button class="btn-police-opt full-width-btn" onclick="selectPoliceType('Hidden setup')">Hidden</button>
+            <button class="btn-police-opt full-width-btn" onclick="selectPoliceType('radar')">Radar</button>
+            <button class="btn-police-opt full-width-btn" onclick="selectPoliceType('emergency')">Emergency</button>
+            <button class="btn-police-opt full-width-btn" onclick="selectPoliceType('hidden')">Hidden</button>
         </div>
     </div> 
 
@@ -206,7 +188,9 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Initialize Map Object - Locked strictly North-up
+        // =========================================================================================
+        // MAP CORE INITIALIZER
+        // =========================================================================================
         const map = L.map('map', { 
             zoomControl: false, 
             maxZoom: 18,
@@ -218,28 +202,23 @@
         
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map); 
 
-        // Core Status State Monitoring Parameters
+        // Core Status States
         let vehiclePos = null;
         let lastGeocodedPos = null;
         let vehicleMarker = null;
         let trackVehicleView = true; 
         let audioMuted = false;
         let wakeLockToken = null;
-        let cameraRefreshInterval = null;
-        let activeCamUrl = ""; 
-        let activeRawTargetUrl = ""; 
 
-        // Selection Handlers
+        // Selection variables
         let chosenCautionType = "";
-        let chosenPoliceType = ""; 
+        let chosenPoliceType = "radar"; 
 
-        // Dynamic Live Cache resolving addresses cleanly
+        // Geocoding caches
         let currentAddressData = { houseNumber: "", streetName: "Unknown Street", isLoaded: false }; 
-        
-        // Variable tracking storage for audio replay history
         let lastSpokenSpeechString = "";
 
-        // Custom Top-Down Vector Yellow Taxi Marker
+        // Moving Yellow Taxi Icon
         const taxiIconStyle = L.divIcon({
             className: 'taxi-vector-icon',
             html: 'TAXI',
@@ -247,152 +226,34 @@
             iconAnchor: [13, 13]
         }); 
 
-        // Setup touch tracking variables for camera sliding functionality
-        let touchStartX = 0;
-        let touchEndX = 0;
-        const minimumSwipeDistance = 50; 
-        const cameraFeedImage = document.getElementById('hud-cam-feed');
-
-        cameraFeedImage.addEventListener('touchstart', function(event) {
-            touchStartX = event.changedTouches[0].screenX;
-        }, { passive: true });
-
-        cameraFeedImage.addEventListener('touchend', function(event) {
-            touchEndX = event.changedTouches[0].screenX;
-            evaluateSwipeDirection();
-        }, { passive: true });
-
-
-        // ==========================================
-        // LANDMARK: CAMERA SWIPE INTERACTIVE MANAGER
-        // What it does: Analyzes horizontal finger swipes across the live feed image to switch cams.
-        // Where it's used: Triggered automatically by touch event handlers on the camera stream view box.
-        // ==========================================
-        function evaluateSwipeDirection() {
-            const cameraButtons = Array.from(document.querySelectorAll('#camera-list-options button'));
-            if (cameraButtons.length === 0) return;
-
-            let currentIndex = cameraButtons.findIndex(btn => {
-                return btn.getAttribute('onclick').includes(activeRawTargetUrl);
-            });
-
-            if (currentIndex === -1) return;
-
-            if (touchStartX - touchEndX > minimumSwipeDistance) {
-                let nextIndex = (currentIndex + 1) % cameraButtons.length;
-                cameraButtons[nextIndex].click();
-                cameraButtons[nextIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            } else if (touchEndX - touchStartX > minimumSwipeDistance) {
-                let prevIndex = (currentIndex - 1 + cameraButtons.length) % cameraButtons.length;
-                cameraButtons[prevIndex].click();
-                cameraButtons[prevIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-        }
-
-
-        // ==========================================
-        // LANDMARK: OPEN CAMERA SELECTION WINDOW
-        // What it does: Resets active stream cache, cleans style highlight classes, and opens camera modal box.
-        // Where it's used: Called immediately when the primary top-HUD "CAMERAS" action button is pressed.
-        // ==========================================
+        // =========================================================================================
+        // CAMERA ACTION CONTROLLER (NEW TAB BYPASS MECHANISM)
+        // =========================================================================================
         function openCameraListMenu() {
-            document.getElementById('live-cam-display-box').style.display = 'none';
-            activeCamUrl = "";
-            activeRawTargetUrl = "";
-            document.querySelectorAll('#camera-list-options button').forEach(btn => btn.classList.remove('selected-cam'));
-            if (cameraRefreshInterval) clearInterval(cameraRefreshInterval);
             showModal('camera-menu-pop');
         } 
 
-
-        // ==========================================
-        // LANDMARK: DYNAMIC LIVE CAMERA STREAM PARSER
-        // What it does: Maps static web endpoints to active live image links and instantly projects them full-screen.
-        // Where it's used: Activated whenever an individual camera location row item is selected inside the modal list.
-        // ==========================================
-        function toggleLiveCameraFeed(targetUrl) {
-            activeRawTargetUrl = targetUrl;
-
-            document.querySelectorAll('#camera-list-options button').forEach(btn => {
-                if (btn.getAttribute('onclick').includes(targetUrl)) {
-                    btn.classList.add('selected-cam');
-                } else {
-                    btn.classList.remove('selected-cam');
-                }
-            });
-
-            let dynamicImageUrl = targetUrl;
-            if (targetUrl.endsWith('.htm') || targetUrl.endsWith('.html')) {
-                const urlParts = targetUrl.split('/');
-                const filename = urlParts[urlParts.length - 1].replace('.htm', '.jpg').replace('.html', '.jpg');
-                let correctedFilename = filename;
-                if (filename === 'transcanada01.jpg') correctedFilename = 'TransCanada01.jpg';
-                else if (filename === 'hastings.jpg') correctedFilename = 'HastingsBoundaryEast.jpg';
-                else if (filename === 'denman3.jpg') correctedFilename = 'GeorgiaDenmanWest.jpg';
-                else if (filename === 'granvillerobson.jpg') correctedFilename = 'GranvilleRobsonNorth.jpg';
-                else if (filename === 'cambiebridge.jpg') correctedFilename = 'CambieBridgeDeck.jpg';
-                else if (filename === 'oak4.jpg') correctedFilename = 'Oak70thNorth.jpg';
-                else if (filename === 'granvilleHoweOnRamp.jpg') correctedFilename = 'GranvilleHoweOnRamp.jpg';
-                else if (filename === 'knightMarineBridge.jpg') correctedFilename = 'KnightMarineBridgeNorth.jpg';
-                else if (filename === 'granville70th.jpg') correctedFilename = 'Granville70thNorth.jpg';
-                
-                dynamicImageUrl = `https://trafficcams.vancouver.ca/cameraimages/${correctedFilename}`;
-            } 
-
-            activeCamUrl = dynamicImageUrl;
-            launchFullscreenViewer();
+        function openLiveCameraTab(targetUrl) {
+            window.open(targetUrl, '_blank');
         } 
 
-
-        // ==========================================
-        // LANDMARK: FULL SCREEN LIGHTBOX PROJECTOR
-        // What it does: Launches the custom black canvas overlay to show the current camera stream in full viewport size.
-        // Where it's used: Executed automatically by the image parser, or when manually tapping a preview panel.
-        // ==========================================
-        function launchFullscreenViewer() {
-            if (!activeCamUrl) return;
-            const lightbox = document.getElementById('lightbox-viewer');
-            const lightboxImg = document.getElementById('lightbox-target-img');
-            
-            lightboxImg.onclick = function() {
-                exitFullscreenViewer();
-            };
-            
-            lightboxImg.src = `${activeCamUrl}?t=${Date.now()}`;
-            lightbox.style.display = 'flex';
-        } 
-
-
-        // ==========================================
-        // LANDMARK: DISMISS FULL SCREEN LIGHTBOX
-        // What it does: Shuts down the black full-screen image display canvas to restore background workspace view.
-        // Where it's used: Activated by clicking the "✕" close layout circle button or tapping straight onto the image.
-        // ==========================================
-        function exitFullscreenViewer() {
-            document.getElementById('lightbox-viewer').style.display = 'none';
-        } 
-
-        // GEOLOCATION ENGINE INITIALIZATION
+        // GEOLOCATION ENGINE
         map.locate({ watch: true, enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }); 
 
         map.on('locationfound', function(e) {
             vehiclePos = e.latlng;
-            
             if (!vehicleMarker) {
                 vehicleMarker = L.marker(e.latlng, { icon: taxiIconStyle }).addTo(map);
                 map.setView(e.latlng, 17);
             } else {
                 vehicleMarker.setLatLng(e.latlng);
             } 
-
             if (trackVehicleView) {
                 map.setView(e.latlng, 17);
             } 
-
             fetchAddressFromCoordinates(e.latlng);
         }); 
 
-        // PERSISTENT VIEWPORT RE-CENTER REDUNDANCY LOOP
         setInterval(() => {
             if (trackVehicleView && vehiclePos) {
                 map.setView(vehiclePos, 17);
@@ -407,12 +268,9 @@
         }); 
 
 
-        // ==========================================
-        // LANDMARK: REVERSE GEOLOCATION ENGINE
-        // What it does: Converts latitude/longitude GPS numbers into real street names and house numbers via Nominatim OpenStreetMap.
-        // Where it's used: Fired continuously by the movement tracker script whenever the driver shifts location.
-        // FIXED: Removed the unsupported custom 'timeout' option configuration property that breaks standard fetch behaviors.
-        // ==========================================
+        // =========================================================================================
+        // REVERSE GEOLOCATION ENGINE
+        // =========================================================================================
         function fetchAddressFromCoordinates(latlng, forcedCallback = null) {
             let distanceMoved = 0;
             if (lastGeocodedPos) {
@@ -447,37 +305,16 @@
                 });
         } 
 
-
-        // ==========================================
-        // LANDMARK: MODAL DISPLAY TRIGGER
-        // What it does: Activates the main dim dark background blocker layer and renders the targeted menu container window visible.
-        // Where it's used: Attached directly to the main layout control panel icons across the layout header.
-        // ==========================================
         function showModal(id) {
             document.getElementById('screen-overlay').style.display = 'block';
             document.getElementById(id).style.display = 'block';
         } 
 
-
-        // ==========================================
-        // LANDMARK: GLOBAL MODAL CLOSURE SUBROUTINE
-        // What it does: Sweeps the workspace screen clean by turning off every active driver menu modal and background mask layer.
-        // Where it's used: Triggered when tapping outside an action box or clicking explicit close cancel interface buttons.
-        // ==========================================
         function hideModals() {
             document.getElementById('screen-overlay').style.display = 'none';
             document.querySelectorAll('.driver-modal').forEach(m => m.style.display = 'none');
-            if (cameraRefreshInterval) clearInterval(cameraRefreshInterval);
-            activeCamUrl = "";
-            activeRawTargetUrl = "";
         } 
 
-
-        // ==========================================
-        // LANDMARK: VEHICLE VIEW RE-CENTER TRACKER
-        // What it does: Re-engages the automated camera locking frame to keep the yellow taxi indicator pinned dead-center on screen.
-        // Where it's used: Triggered when pressing the right-side middle "MAP FREE" utility circular navigation option.
-        // ==========================================
         function handleRecenter() {
             trackVehicleView = true;
             const btn = document.getElementById('lock-center-btn');
@@ -488,12 +325,6 @@
             }
         } 
 
-
-        // ==========================================
-        // LANDMARK: AUDIO MUTE MANAGEMENT INTERFACE
-        // What it does: Toggles the audio engine state variable and transforms button skin between grey and bright alarm red.
-        // Where it's used: Activated by pressing the top-left corner side circular control button element.
-        // ==========================================
         function handleMuteToggle() {
             audioMuted = !audioMuted;
             const btn = document.getElementById('mute-toggle-btn');
@@ -507,12 +338,9 @@
         } 
 
 
-        // ==========================================
-        // LANDMARK: DISPATCH PASSENGER FLAG MARKER
-        // What it does: Places a passenger icon at current location coordinates with an interactive cross-platform map routing hyperlink.
-        // Where it's used: Called when choosing an orientation or hotel option within the primary flag popup terminal list.
-        // SECURITY PATCH: Replaced blocked 'googleusercontent' mirror link framework with safe native web coordinate parameters.
-        // ==========================================
+        // =========================================================================================
+        // DISPATCH PASSENGER FLAG MARKER
+        // =========================================================================================
         function dropFlagDirect(selectionValue) {
             hideModals(); 
             if (!vehiclePos) return; 
@@ -529,8 +357,6 @@
 
                 const flagMarker = L.marker(targetPos, { icon: redManIcon }).addTo(map);
                 const completeAddress = currentAddressData.houseNumber ? `${currentAddressData.houseNumber} ${currentAddressData.streetName}` : currentAddressData.streetName;
-                
-                // FIXED: Repaired broken template literal syntax block and secured deep link structure
                 const navigationUrl = `https://www.google.com/maps/search/?api=1&query=${targetPos.lat},${targetPos.lng}`;
 
                 let headerLabel = `<strong style="color:#ff3b30;">FLAG WAITING</strong>`;
@@ -547,7 +373,6 @@
 
                 dispatchAudioNarration('Flag', selectionValue); 
 
-                // Automatic cleanup policy: drops tracking instance from canvas layers after exactly 5 minutes
                 setTimeout(() => {
                     map.removeLayer(flagMarker);
                 }, 300000); 
@@ -555,23 +380,15 @@
         } 
 
 
-        // ==========================================
-        // LANDMARK: CAUTION STAGE 1 ROUTER
-        // What it does: Registers the specific category of obstruction picked and advances display interface straight onto step 2 panel.
-        // Where it's used: Attached directly to individual items inside the yellow "CAUTION" warning window panel list.
-        // ==========================================
+        // =========================================================================================
+        // UPDATED CAUTION LOGIC SUBROUTINES WITH CUSTOM ICON DROP RULES
+        // =========================================================================================
         function selectCautionType(type) {
             chosenCautionType = type;
             hideModals();
             showModal('caution-dir-pop');
         } 
 
-
-        // ==========================================
-        // LANDMARK: PROJECT CAUTION ANCHOR ON MAP
-        // What it does: Draws a solid yellow circle marker alert onto current map view zone loaded with reverse address data blocks.
-        // Where it's used: Fired immediately when selecting a target driving vector option from the Caution direction matrix panel.
-        // ==========================================
         function dropCautionMarker(directionValue) {
             hideModals(); 
             if (!vehiclePos) return; 
@@ -581,14 +398,42 @@
             const directionLabel = directionValue; 
 
             fetchAddressFromCoordinates(targetPos, function() {
-                const dynamicMarker = L.circleMarker(targetPos, {
-                    color: '#b38f00',
-                    fillColor: '#ffcc00',
-                    fillOpacity: 1.0, 
-                    weight: 3,
-                    radius: 14
-                }).addTo(map); 
+                let cautionIconHtml = "";
+                let classLabel = "";
+                let anchorOffsets = [15, 15];
+                let customSize = [30, 30];
 
+                // Check condition types and assign specific emoji symbols and sizes
+                if (typeLabel === 'Mild traffic') {
+                    cautionIconHtml = "🚘🚘";
+                    classLabel = "caution-traffic-icon";
+                    customSize = [50, 26];
+                    anchorOffsets = [25, 13];
+                } else if (typeLabel === 'Heavy traffic') {
+                    cautionIconHtml = "🚘🚘🚘🚘";
+                    classLabel = "caution-traffic-icon";
+                    customSize = [90, 26];
+                    anchorOffsets = [45, 13];
+                } else if (typeLabel === 'Accident') {
+                    cautionIconHtml = "💥🚗";
+                    classLabel = "caution-accident-icon";
+                    customSize = [44, 34];
+                    anchorOffsets = [22, 17];
+                } else if (typeLabel === 'Road closure') {
+                    cautionIconHtml = "🚧";
+                    classLabel = "caution-closure-icon";
+                    customSize = [34, 34];
+                    anchorOffsets = [17, 17];
+                }
+
+                const cautionDivIcon = L.divIcon({
+                    className: classLabel,
+                    html: cautionIconHtml,
+                    iconSize: customSize,
+                    iconAnchor: anchorOffsets
+                });
+
+                const dynamicMarker = L.marker(targetPos, { icon: cautionDivIcon }).addTo(map); 
                 const completeAddress = currentAddressData.houseNumber ? `${currentAddressData.houseNumber} ${currentAddressData.streetName}` : currentAddressData.streetName; 
 
                 dynamicMarker.bindPopup(`
@@ -598,62 +443,61 @@
                 `).openPopup(); 
 
                 dispatchAudioNarration('Caution', { type: typeLabel, direction: directionLabel });
+
+                // Keep map clear by auto-removing the marker after 20 minutes
+                setTimeout(() => {
+                    map.removeLayer(dynamicMarker);
+                }, 1200000);
             });
         } 
 
 
-        // ==========================================
-        // LANDMARK: POLICE STAGE 1 ROUTER
-        // What it does: Logs whether enforcement threat tracking profile matches Radar, Emergency or Hidden setups and shuffles view into step 2.
-        // Where it's used: Linked directly to clicking elements inside the primary "POLICE" enforcement intercept menu panel.
-        // ==========================================
+        // =========================================================================================
+        // POLICE PIPELINE SNIPPET
+        // =========================================================================================
         function selectPoliceType(type) {
-            chosenPoliceType = type;
+            chosenPoliceType = type.toLowerCase().trim();
             hideModals();
             showModal('police-dir-pop');
         } 
 
-
-        // ==========================================
-        // LANDMARK: PROJECT POLICE ENFORCEMENT ZONE
-        // What it does: Pins a solid blue warning indicator point marker block onto map layout containing current geocoded data matrices.
-        // Where it's used: Triggered immediately when selecting a structural direction option inside the final police setup view window.
-        // ==========================================
         function dropPoliceMarker(directionValue) {
             hideModals(); 
             if (!vehiclePos) return; 
 
             const targetPos = vehiclePos;
-            const typeLabel = chosenPoliceType;
+            const typeLabel = chosenPoliceType; 
             const directionLabel = directionValue; 
 
             fetchAddressFromCoordinates(targetPos, function() {
-                const dynamicMarker = L.circleMarker(targetPos, {
-                    color: '#0044cc',
-                    fillColor: '#007aff',
-                    fillOpacity: 1.0, 
-                    weight: 3,
-                    radius: 14
-                }).addTo(map); 
+                const policeIcon = L.divIcon({
+                    className: 'police-officer-icon',
+                    html: '👮',
+                    iconSize: [36, 36],
+                    iconAnchor: [18, 18]
+                });
 
+                const officerMarker = L.marker(targetPos, { icon: policeIcon }).addTo(map);
                 const completeAddress = currentAddressData.houseNumber ? `${currentAddressData.houseNumber} ${currentAddressData.streetName}` : currentAddressData.streetName; 
 
-                dynamicMarker.bindPopup(`
-                    <strong style="color:#007aff;">POLICE REPORTED</strong><br>
-                    <strong>Type:</strong> ${typeLabel} (${directionLabel})<br>
+                officerMarker.bindPopup(`
+                    <strong style="color:#007aff;">POLICE ENFORCEMENT</strong><br>
+                    <strong>Type:</strong> ${typeLabel.toUpperCase()} (${directionLabel})<br>
                     <span>Location: ${completeAddress}</span>
                 `).openPopup(); 
 
                 dispatchAudioNarration('Police', { type: typeLabel, direction: directionLabel });
+
+                setTimeout(() => {
+                    map.removeLayer(officerMarker);
+                }, 1800000);
             });
         } 
 
 
-        // ==========================================
-        // LANDMARK: AUDIO ADDRESS COUPLES STRING CONVERTER
-        // What it does: Breaks standard 3 and 4-digit street block integers down into vocal pair groupings (e.g. 1441 to "14 41").
-        // Where it's used: Internal optimization subroutine run continuously right before triggering native TTS output arrays.
-        // ==========================================
+        // =========================================================================================
+        // AUDIO ADDRESS CONVERTER
+        // =========================================================================================
         function breakHouseNumbersIntoCouples(numberStr) {
             if (!numberStr || isNaN(numberStr)) return numberStr;
             
@@ -677,11 +521,9 @@
         } 
 
 
-        // ==========================================
-        // LANDMARK: CENTRAL TEXT-TO-SPEECH BROADCAST MACHINE
-        // What it does: Assembles plain English alert strings and flushes audio buffers with an isolated delay to prevent clipping over Bluetooth.
-        // Where it's used: Automatically invoked whenever a flag, caution obstacle, or police vehicle trap is successfully saved onto the map field.
-        // ==========================================
+        // =========================================================================================
+        // CENTRAL TEXT-TO-SPEECH BROADCAST MACHINE
+        // =========================================================================================
         function dispatchAudioNarration(category, payload) {
             const spokenHouseNumber = breakHouseNumbersIntoCouples(currentAddressData.houseNumber);
             const addressAudioString = spokenHouseNumber ? `${spokenHouseNumber} ${currentAddressData.streetName}` : currentAddressData.streetName;
@@ -699,7 +541,17 @@
                 finalSpeechString = `One ${payload.type.toLowerCase()} reported ahead ${payload.direction.toLowerCase()} at ${addressAudioString}`;
             } 
             else if (category === 'Police') {
-                finalSpeechString = `One police reported ahead ${payload.direction.toLowerCase()} at ${addressAudioString} radar radar`;
+                const speechDirection = payload.direction.toLowerCase();
+                
+                if (payload.type === 'emergency') {
+                    finalSpeechString = `One police reported ahead ${speechDirection} at ${addressAudioString} emergency`;
+                } 
+                else if (payload.type === 'hidden') {
+                    finalSpeechString = `One police reported ahead ${speechDirection} at ${addressAudioString} they are hiding they are hiding`;
+                } 
+                else {
+                    finalSpeechString = `One police reported ahead ${speechDirection} at ${addressAudioString} Radar Radar`;
+                }
             } 
 
             lastSpokenSpeechString = finalSpeechString;
@@ -717,11 +569,9 @@
         } 
 
 
-        // ==========================================
-        // LANDMARK: INSTANT AUDIO CACHE REPLAY SUBROUTINE
-        // What it does: Reads the active voice broadcast string straight out of memory logs and plays it back with near-zero latency latency.
-        // Where it's used: Attached directly to the middle left side "REPLAY MSG" purple dashboard icon utility action button component.
-        // ==========================================
+        // =========================================================================================
+        // INSTANT AUDIO REPLAY
+        // =========================================================================================
         function replayLastAudioNarration() {
             if (!lastSpokenSpeechString) return;
             
@@ -736,11 +586,9 @@
         }
 
 
-        // ==========================================
-        // LANDMARK: HARDWARE DISPLAY ANTI-BLACKOUT ENGINE
-        // What it does: Requests a navigator screen lock profile to stop mobile device screen timers from putting displays to sleep while on shift.
-        // Where it's used: Activated instantly during page initialization cycles, and monitors background visibility changes.
-        // ==========================================
+        // =========================================================================================
+        // SCREEN ANTI-BLACKOUT WAKELOCK
+        // =========================================================================================
         async function maintainScreenWakeLock() {
             try {
                 if ('wakeLock' in navigator) {
