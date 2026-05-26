@@ -11,14 +11,16 @@
         
         #map { width: 100%; height: 100%; position: absolute; top: 0; bottom: 0; z-index: 1; }
         
-        /* Top HUD Action Buttons Grid (4 Circular Controls) */
-        .top-actions { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 1000; width: 95%; justify-content: center; }
-        .action-btn { width: 82px; height: 82px; border-radius: 50%; border: 4px solid #fff; color: white; font-weight: bold; font-size: 0.82rem; cursor: pointer; box-shadow: 0 6px 12px rgba(0,0,0,0.4); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        /* Top HUD Action Buttons - Repositioned to Corners */
+        .top-actions { position: absolute; top: 20px; left: 0; right: 0; padding: 0 20px; display: flex; justify-content: space-between; z-index: 1000; pointer-events: none; }
+        .action-btn { pointer-events: auto; width: 82px; height: 82px; border-radius: 50%; border: 4px solid #fff; color: white; font-weight: bold; font-size: 0.82rem; cursor: pointer; box-shadow: 0 6px 12px rgba(0,0,0,0.4); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         .btn-flag { background: #ff3b30; }
-        .btn-caution { background: #ffcc00; color: #000; border-color: #000; }
         .btn-police { background: #007aff; }
-        .btn-camera-top { background: #34c759; } 
         .action-btn span { font-size: 0.62rem; margin-top: 2px; display: block; line-height: 1.1; font-weight: 900; } 
+
+        /* Bottom HUD Menu Trigger Button */
+        .bottom-actions { position: absolute; bottom: 30px; left: 20px; z-index: 1000; }
+        .btn-main-menu { background: #444446; color: white; border-color: #fff; }
 
         /* Middle Side Utility Buttons */
         .side-util { position: absolute; top: 50%; transform: translateY(-50%); z-index: 1000; display: flex; flex-direction: column; gap: 20px; }
@@ -27,15 +29,6 @@
         .util-circle { width: 70px; height: 70px; border-radius: 50%; background: #ffffff; border: 3px solid #1c1c1e; color: #1c1c1e; font-weight: 900; font-size: 0.85rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; text-align: center; }
         .util-circle.active-mute { background: #ff453a; color: white; border-color: white; }
         .util-circle.active-center { background: #34c759; color: white; border-color: white; } 
-        
-        /* Repeat Audio Button Style */
-        .util-circle.active-repeat { background: #5856d6; color: white; border-color: white; }
-        
-        /* Suggestion Button Style */
-        .util-circle.btn-suggestion { background: #e5e5ea; color: #1c1c1e; border: 3px solid #1c1c1e; }
-        
-        /* Chat Box Log Toggle Button Style */
-        .util-circle.btn-chat-log { background: #f1f1f7; color: #1c1c1e; border: 3px solid #1c1c1e; }
 
         /* Custom Pure CSS Taxi Moving Element */
         .taxi-vector-icon { background: #ffd100; border: 2px solid #000; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.4); text-align: center; font-weight: bold; font-size: 10px; line-height: 24px; color: black; }
@@ -70,6 +63,14 @@
         /* Hotel Button Style Assertion */
         .btn-flag-hotel { grid-column: span 2; background: #5856d6 !important; color: #ffffff !important; border: 3px solid #5856d6; }
 
+        /* BRIGHT THEMED UTILITY PANEL MENU BUTTONS */
+        .utility-menu-grid { width: 340px; }
+        .btn-caution-menu { background: #ffcc00 !important; color: #000000 !important; border: 3px solid #e6b800 !important; font-weight: 900 !important; }
+        .btn-cameras-menu { background: #34c759 !important; color: #ffffff !important; border: 3px solid #28a745 !important; }
+        .btn-replay-menu { background: #5856d6 !important; color: #ffffff !important; border: 3px solid #433fa7 !important; }
+        .btn-logs-menu { background: #00c7be !important; color: #ffffff !important; border: 3px solid #00a39c !important; }
+        .btn-feedback-menu { background: #ff9500 !important; color: #ffffff !important; border: 3px solid #cc7700 !important; }
+
         /* Caution Menu Styles (Solid Yellow) */
         .caution-grid { width: 310px; }
         .btn-caution-opt { background: #ffcc00 !important; color: #000000 !important; border: 3px solid #ffcc00; } 
@@ -99,7 +100,7 @@
         .suggestion-input { width: 100%; height: 120px; padding: 12px; border-radius: 8px; border: 2px solid #a2a2a6; font-size: 1rem; resize: none; margin-bottom: 14px; font-family: inherit; }
         .suggestion-input:focus { border-color: #007aff; outline: none; }
         .btn-submit-sugg { background: #007aff; color: white; border: none; width: 100%; padding: 14px; border-radius: 8px; font-weight: 900; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; margin-bottom: 10px; }
-        .btn-cancel-sugg { background: #e5e5ea; color: #1c1c1e; border: none; width: 100%; padding: 10px; border-radius: 8px; font-weight: 900; font-size: 0.95rem; cursor: pointer; text-transform: uppercase; }
+        .btn-cancel-sugg { background: #e5e5ea; color: #1c1c1e; border: none; width: 100%; padding: 10px; border-radius: 8px; font-weight: 900; font-size: 0.95rem; cursor: pointer; text-transform: uppercase; margin-bottom: 10px; }
 
         /* CHAT LOG HISTORY WINDOW STYLES - FIXED TO MAINTAIN SOLID ALL-THE-TIME SYSTEM THEME COLORS */
         .chat-log-grid { width: 360px; max-height: 80vh; display: flex; flex-direction: column; padding: 16px; }
@@ -119,6 +120,19 @@
         .chat-log-item:active { background: #e5e5ea; }
         .chat-log-item span.time-badge { font-size: 0.72rem; color: #8e8e93; font-weight: bold; display: block; margin-bottom: 3px; text-transform: uppercase; }
         .chat-empty-msg { text-align: center; color: #8e8e93; font-weight: bold; font-size: 0.95rem; padding-top: 40px; text-transform: uppercase; }
+
+        /* SHIFT SCHEDULER POPUP STYLES */
+        .shift-modal-grid { width: 330px; }
+        .shift-time-picker { width: 100%; padding: 14px; font-size: 1.4rem; font-weight: 900; text-align: center; border-radius: 10px; border: 3px solid #1c1c1e; margin: 15px 0; font-family: inherit; color: #1c1c1e; background: #f2f2f7; }
+        .btn-confirm-shift { background: #34c759; color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: 900; font-size: 1.2rem; cursor: pointer; text-transform: uppercase; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        
+        /* BLACKOUT SCREEN SIGN OFF STATUS OVERLAY */
+        #shift-complete-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111111; z-index: 99999; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+        .complete-card { background: #ffffff; border: 5px solid #ffd100; border-radius: 24px; padding: 35px 25px; max-width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+        .complete-icon { font-size: 4rem; margin-bottom: 15px; }
+        .complete-title { font-size: 1.8rem; font-weight: 900; color: #1c1c1e; margin-bottom: 10px; text-transform: uppercase; }
+        .complete-desc { font-size: 1.1rem; color: #48484a; font-weight: bold; line-height: 1.4; margin-bottom: 25px; }
+        .btn-restart-app { background: #1c1c1e; color: #ffd100; border: 3px solid #ffd100; padding: 14px 28px; font-weight: 900; font-size: 1.1rem; border-radius: 10px; cursor: pointer; text-transform: uppercase; }
     </style>
 </head>
 <body> 
@@ -127,22 +141,40 @@
 
     <div class="top-actions">
         <button class="action-btn btn-flag" onclick="showModal('flag-pop')">🔴<br><span>FLAG</span></button>
-        <button class="action-btn btn-caution" onclick="showModal('caution-type-pop')">⚠️<br><span>CAUTION</span></button>
         <button class="action-btn btn-police" onclick="showModal('police-pop')">👮<br><span>POLICE</span></button>
-        <button class="action-btn btn-camera-top" onclick="openCameraListMenu()">🎥<br><span>CAMERAS</span></button>
     </div> 
+
+    <div class="bottom-actions">
+        <button class="action-btn btn-main-menu" onclick="showModal('utility-menu-pop')">📋<br><span>MENU</span></button>
+    </div>
 
     <div class="side-util left-side">
         <button id="mute-toggle-btn" class="util-circle" onclick="handleMuteToggle()">AUDIO<br>ON</button>
-        <button id="audio-repeat-btn" class="util-circle active-repeat" onclick="replayLastAudioNarration()">REPLAY<br>MSG</button>
-        <button id="suggestion-trigger-btn" class="util-circle btn-suggestion" onclick="showModal('suggestion-pop')">FEED<br>BACK</button>
     </div>
     <div class="side-util right-side">
         <button id="lock-center-btn" class="util-circle active-center" onclick="handleRecenter()">MAP<br>LOCKED</button>
-        <button id="chat-log-trigger-btn" class="util-circle btn-chat-log" onclick="openChatLogHistoryMenu()">💬<br>CHAT</button>
     </div> 
 
     <div id="screen-overlay" class="modal-overlay" onclick="hideModals()"></div> 
+
+    <div id="shift-scheduler-pop" class="driver-modal shift-modal-grid" style="display: block;">
+        <span class="modal-title">Shift Setup</span>
+        <div style="text-align: center; font-weight: 900; color: #48484a; font-size: 0.95rem; text-transform: uppercase;">What time does your shift end?</div>
+        <input type="time" id="shift-end-time-input" class="shift-time-picker">
+        <button class="btn-confirm-shift" onclick="initializeDriverShiftTimer()">Go On Duty</button>
+    </div>
+
+    <div id="utility-menu-pop" class="driver-modal utility-menu-grid">
+        <span class="modal-title">Utility Panel</span>
+        <div class="grid-options">
+            <button class="btn-caution-menu full-width-btn" onclick="openCautionSelectionFromMenu()">👷 HAZARD</button>
+            <button class="btn-cameras-menu full-width-btn" onclick="openCamerasFromMenu()">📷 CAMERAS</button>
+            <button class="btn-replay-menu full-width-btn" onclick="triggerReplayFromMenu()">🔊 REPEAT</button>
+            <button class="btn-logs-menu full-width-btn" onclick="openChatLogHistoryMenuFromMenu()">💬 LOG BOOK</button>
+            <button class="btn-feedback-menu full-width-btn" onclick="openFeedbackFromMenu()">📝 DRIVER FEEDBACK</button>
+        </div>
+        <button class="btn-close-cam" onclick="hideModals()">Close Menu</button>
+    </div>
 
     <div id="chat-log-pop" class="driver-modal chat-log-grid">
         <span class="modal-title">Live Active Logs</span>
@@ -152,19 +184,20 @@
             <button id="tab-btn-police" class="chat-tab-btn" onclick="switchChatLogTab('Police')">Police</button>
         </div>
         <div id="chat-list-target" class="chat-list-container"></div>
-        <button class="btn-close-cam" onclick="hideModals()">Close Logs</button>
+        <button class="btn-close-cam" onclick="backToUtilityMenu('chat-log-pop')">Back</button>
     </div>
 
     <div id="suggestion-pop" class="driver-modal suggestion-grid">
         <span class="modal-title">Driver Suggestion</span>
         <textarea id="driver-suggestion-text" class="suggestion-input" placeholder="Type your request, route issue, or feature idea here..."></textarea>
         <button class="btn-submit-sugg" onclick="submitDriverSuggestion()">Submit Idea</button>
-        <button class="btn-cancel-sugg" onclick="hideModals()">Cancel</button>
+        <button class="btn-cancel-sugg" onclick="backToUtilityMenu('suggestion-pop')">Back</button>
     </div>
 
     <div id="camera-menu-pop" class="driver-modal cam-list-grid">
         <span class="modal-title">Street View Cameras</span>
         <div class="grid-options" id="camera-list-options">
+            <button class="btn-camera-select full-width-btn" onclick="openLiveCameraTab('https://trafficcams.vancouver.ca/granvillehastings.htm')">Pan Pacific</button>
             <button class="btn-camera-select full-width-btn" onclick="openLiveCameraTab('https://trafficcams.vancouver.ca/BurrardCornwall4.htm')">Burrard and Cornwall</button>
             <button class="btn-camera-select full-width-btn" onclick="openLiveCameraTab('https://trafficcams.vancouver.ca/cambiebridge.htm')">Cambie Bridge</button>
             <button class="btn-camera-select full-width-btn" onclick="openLiveCameraTab('https://trafficcams.vancouver.ca/granvilleHoweOnRamp.htm')">Granville Bridge</button>
@@ -175,9 +208,9 @@
             <button class="btn-camera-select full-width-btn" onclick="openLiveCameraTab('https://trafficcams.vancouver.ca/knightMarineBridge.htm')">Knight Street Bridge</button>
             <button class="btn-camera-select full-width-btn" onclick="openLiveCameraTab('https://trafficcams.vancouver.ca/oak4.htm')">Oak and 70th</button>
             <button class="btn-camera-select full-width-btn" onclick="openLiveCameraTab('https://trafficcams.vancouver.ca/denman3.htm')">W Georgia and Denman st.</button>
+            <button class="btn-camera-select full-width-btn" onclick="openLiveCameraTab('https://trafficcams.vancouver.ca/CambieMarine.htm')">Cambie and Marine</button>
         </div>
-        
-        <button class="btn-close-cam" onclick="hideModals()">Close Menu</button>
+        <button class="btn-close-cam" onclick="backToUtilityMenu('camera-menu-pop')">Back</button>
     </div> 
 
     <div id="flag-pop" class="driver-modal flag-grid">
@@ -205,6 +238,7 @@
             <button class="btn-caution-opt full-width-btn" onclick="selectCautionType('Accident')">Accident</button>
             <button class="btn-caution-opt full-width-btn" onclick="selectCautionType('Road closure')">Road Closure</button>
         </div>
+        <button class="btn-close-cam" onclick="backToUtilityMenu('caution-type-pop')" style="margin-top:14px;">Back</button>
     </div> 
 
     <div id="caution-dir-pop" class="driver-modal caution-grid">
@@ -214,7 +248,7 @@
             <button class="btn-caution-opt" onclick="dropCautionMarker('Southbound')">South</button>
             <button class="btn-caution-opt" onclick="dropCautionMarker('Eastbound')">East</button>
             <button class="btn-caution-opt" onclick="dropCautionMarker('Westbound')">West</button>
-            <button class="btn-caution-opt full-width-btn" onclick="dropCautionMarker('All Directions')">All Directions</button>
+            <button class="btn-caution-opt fill-width-btn" onclick="dropCautionMarker('All Directions')">All Directions</button>
         </div>
     </div> 
 
@@ -234,9 +268,18 @@
             <button class="btn-police-opt" onclick="dropPoliceMarker('Southbound')">South</button>
             <button class="btn-police-opt" onclick="dropPoliceMarker('Eastbound')">East</button>
             <button class="btn-police-opt" onclick="dropPoliceMarker('Westbound')">West</button>
-            <button class="btn-police-opt full-width-btn" onclick="dropPoliceMarker('All Directions')">All Directions</button>
+            <button class="btn-police-opt fill-width-btn" onclick="dropPoliceMarker('All Directions')">All Directions</button>
         </div>
     </div> 
+
+    <div id="shift-complete-screen">
+        <div class="complete-card">
+            <div class="complete-icon">🏁</div>
+            <div class="complete-title">Shift Completed</div>
+            <div class="complete-desc">You have been signed off. The application is shut down and all audio updates are disabled. Have a safe drive home!</div>
+            <button class="btn-restart-app" onclick="restartAppSession()">Start New Shift</button>
+        </div>
+    </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
@@ -274,6 +317,11 @@
         let activeMarkersLog = [];
         let activeChatLogTab = "Flag";
 
+        // AUTOMATED SHIFT MANAGER CONTEXT REFERENCES
+        let targetShiftEndTimestamp = null;
+        let shiftMonitoringInterval = null;
+        let isShiftActive = false;
+
         // Moving Yellow Taxi Icon
         const taxiIconStyle = L.divIcon({
             className: 'taxi-vector-icon',
@@ -281,6 +329,136 @@
             iconSize: [26, 26],
             iconAnchor: [13, 13]
         }); 
+
+        // Set default time values for input on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const now = new Date();
+            // Set default picker display target to 8 hours from now
+            now.setHours(now.getHours() + 8);
+            const defaultTimeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('shift-end-time-input').value = defaultTimeStr;
+            
+            // Require initialization blocking selection popups
+            document.getElementById('screen-overlay').style.display = 'block';
+            document.getElementById('shift-scheduler-pop').style.display = 'block';
+        });
+
+        // =========================================================================================
+        // AUTOMATED SHIFT SCHEDULER CONTROLLER ENGINE
+        // =========================================================================================
+        function initializeDriverShiftTimer() {
+            const timeInputValue = document.getElementById('shift-end-time-input').value;
+            if (!timeInputValue) {
+                alert("PLEASE SELECT A VALID SHIFT END TIME.");
+                return;
+            }
+
+            const [hours, minutes] = timeInputValue.split(':').map(Number);
+            const now = new Date();
+            let targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, 0, 0);
+
+            // If target time is earlier than current time, assume it means tomorrow morning (cross-midnight shifts)
+            if (targetDate <= now) {
+                targetDate.setDate(targetDate.getDate() + 1);
+            }
+
+            targetShiftEndTimestamp = targetDate.getTime();
+            isShiftActive = true;
+
+            // Clear any active previous timers if they exist
+            if (shiftMonitoringInterval) clearInterval(shiftMonitoringInterval);
+
+            // Start clock polling tracking check loop updates every single second
+            shiftMonitoringInterval = setInterval(checkShiftTimeExpirationStatus, 1000);
+
+            // Close the initiation modal setup sequence safely
+            document.getElementById('shift-scheduler-pop').style.display = 'none';
+            document.getElementById('screen-overlay').style.display = 'none';
+        }
+
+        function checkShiftTimeExpirationStatus() {
+            if (!isShiftActive || !targetShiftEndTimestamp) return;
+
+            const currentTimestamp = Date.now();
+            if (currentTimestamp >= targetShiftEndTimestamp) {
+                shutDownActiveAppSession();
+            }
+        }
+
+        function shutDownActiveAppSession() {
+            isShiftActive = false;
+            if (shiftMonitoringInterval) clearInterval(shiftMonitoringInterval);
+            
+            // 1. Permanently mute the voice broadcast machine engine
+            audioMuted = true;
+            const btn = document.getElementById('mute-toggle-btn');
+            if (btn) {
+                btn.className = "util-circle active-mute";
+                btn.innerHTML = "AUDIO<br>MUTED";
+            }
+
+            // 2. Clear out TTS pipelines immediately
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+
+            // 3. Close open operational selection view screen layers
+            hideModals();
+
+            // 4. Drop map engine position tracking watch tasks
+            trackVehicleView = false;
+
+            // 5. Throw absolute blackout control mask panel overlay over everything
+            document.getElementById('shift-complete-screen').style.display = 'flex';
+            console.log("SHIFT TIMER TERMINATED: Application context isolated and signed off.");
+        }
+
+        function restartAppSession() {
+            document.getElementById('shift-complete-screen').style.display = 'none';
+            audioMuted = false;
+            const btn = document.getElementById('mute-toggle-btn');
+            if (btn) {
+                btn.className = "util-circle";
+                btn.innerHTML = "AUDIO<br>ON";
+            }
+            
+            // Re-open initiation input choice interface workflow dialog box
+            document.getElementById('screen-overlay').style.display = 'block';
+            document.getElementById('shift-scheduler-pop').style.display = 'block';
+        }
+
+        // =========================================================================================
+        // NEW MENU OVERLAY ROUTING SELECTIONS
+        // =========================================================================================
+        function openCautionSelectionFromMenu() {
+            hideModals();
+            showModal('caution-type-pop');
+        }
+
+        function openCamerasFromMenu() {
+            hideModals();
+            showModal('camera-menu-pop');
+        }
+
+        function triggerReplayFromMenu() {
+            hideModals();
+            replayLastAudioNarration();
+        }
+
+        function openChatLogHistoryMenuFromMenu() {
+            hideModals();
+            openChatLogHistoryMenu();
+        }
+
+        function openFeedbackFromMenu() {
+            hideModals();
+            showModal('suggestion-pop');
+        }
+
+        function backToUtilityMenu(currentModalId) {
+            document.getElementById(currentModalId).style.display = 'none';
+            showModal('utility-menu-pop');
+        }
 
         // =========================================================================================
         // CAMERA ACTION CONTROLLER (NEW TAB BYPASS MECHANISM)
@@ -362,16 +540,23 @@
         } 
 
         function showModal(id) {
+            // Block normal interaction screens if driver has expired active session tasks
+            if (!isShiftActive && id !== 'shift-scheduler-pop') return;
+            
             document.getElementById('screen-overlay').style.display = 'block';
             document.getElementById(id).style.display = 'block';
         } 
 
         function hideModals() {
+            // Block removal of overlay layout profiles if tracking activation setups remain undone
+            if (!isShiftActive) return;
+            
             document.getElementById('screen-overlay').style.display = 'none';
             document.querySelectorAll('.driver-modal').forEach(m => m.style.display = 'none');
         } 
 
         function handleRecenter() {
+            if (!isShiftActive) return;
             trackVehicleView = true;
             const btn = document.getElementById('lock-center-btn');
             btn.className = "util-circle active-center";
@@ -382,6 +567,7 @@
         } 
 
         function handleMuteToggle() {
+            if (!isShiftActive) return;
             audioMuted = !audioMuted;
             const btn = document.getElementById('mute-toggle-btn');
             if(audioMuted) {
@@ -398,6 +584,7 @@
         // DISPATCH PASSENGER FLAG MARKER
         // =========================================================================================
         function dropFlagDirect(selectionValue) {
+            if (!isShiftActive) return;
             hideModals(); 
             if (!vehiclePos) return; 
 
@@ -452,12 +639,14 @@
         // UPDATED CAUTION LOGIC SUBROUTINES WITH CUSTOM ICON DROP RULES
         // =========================================================================================
         function selectCautionType(type) {
+            if (!isShiftActive) return;
             chosenCautionType = type;
             hideModals();
             showModal('caution-dir-pop');
         } 
 
         function dropCautionMarker(directionValue) {
+            if (!isShiftActive) return;
             hideModals(); 
             if (!vehiclePos) return; 
 
@@ -536,12 +725,14 @@
         // POLICE PIPELINE SNIPPET
         // =========================================================================================
         function selectPoliceType(type) {
+            if (!isShiftActive) return;
             chosenPoliceType = type.toLowerCase().trim();
             hideModals();
             showModal('police-dir-pop');
         } 
 
         function dropPoliceMarker(directionValue) {
+            if (!isShiftActive) return;
             hideModals(); 
             if (!vehiclePos) return; 
 
@@ -616,6 +807,9 @@
         // CENTRAL TEXT-TO-SPEECH BROADCAST MACHINE
         // =========================================================================================
         function dispatchAudioNarration(category, payload) {
+            // Absolute blocker if shift limit reached or audio toggled down
+            if (!isShiftActive || audioMuted) return; 
+
             const spokenHouseNumber = breakHouseNumbersIntoCouples(currentAddressData.houseNumber);
             const addressAudioString = spokenHouseNumber ? `${spokenHouseNumber} ${currentAddressData.streetName}` : currentAddressData.streetName;
             
@@ -647,8 +841,6 @@
 
             lastSpokenSpeechString = finalSpeechString;
 
-            if (audioMuted) return; 
-
             const clearHardwareBuffer = new SpeechSynthesisUtterance("");
             window.speechSynthesis.speak(clearHardwareBuffer); 
 
@@ -664,7 +856,7 @@
         // INSTANT AUDIO REPLAY
         // =========================================================================================
         function replayLastAudioNarration() {
-            if (!lastSpokenSpeechString) return;
+            if (!isShiftActive || !lastSpokenSpeechString) return;
             
             const clearHardwareBuffer = new SpeechSynthesisUtterance("");
             window.speechSynthesis.speak(clearHardwareBuffer); 
@@ -681,6 +873,7 @@
         // DRIVER SUGGESTION HANDLING SUBROUTINE
         // =========================================================================================
         function submitDriverSuggestion() {
+            if (!isShiftActive) return;
             const field = document.getElementById('driver-suggestion-text');
             const note = field.value.trim();
             
@@ -705,11 +898,13 @@
         // CHAT ENGINE AND HISTORY NAVIGATION LOGIC PIPELINE
         // =========================================================================================
         function openChatLogHistoryMenu() {
+            if (!isShiftActive) return;
             showModal('chat-log-pop');
             switchChatLogTab(activeChatLogTab);
         }
 
         function switchChatLogTab(categoryTab) {
+            if (!isShiftActive) return;
             activeChatLogTab = categoryTab;
             
             document.getElementById('tab-btn-flag').className = "chat-tab-btn" + (categoryTab === 'Flag' ? " active-tab-flags" : "");
@@ -743,6 +938,7 @@
                 logCard.className = "chat-log-item";
                 
                 logCard.onclick = function() {
+                    if (!isShiftActive) return;
                     hideModals();
                     trackVehicleView = false;
                     
