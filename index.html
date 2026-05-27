@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Yellow Cab Companion Pro V9</title>
+    <title>Yellow Cab Companion Pro V10</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         * { box-sizing: border-box; }
@@ -11,6 +11,42 @@
         
         #map { width: 100%; height: 100%; position: absolute; top: 0; bottom: 0; z-index: 1; }
         
+        /* Dynamic Auto-Hiding Zoom Control Box Wrapper Placement Rules */
+        .dynamic-zoom-container {
+            position: absolute;
+            top: 115px; /* Safely nested between Police Button and Right Utility Circle */
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease-in-out;
+        }
+        .dynamic-zoom-container.zoom-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .custom-zoom-btn {
+            width: 50px;
+            height: 50px;
+            background: #ffffff;
+            border: 3px solid #1c1c1e;
+            color: #1c1c1e;
+            font-size: 1.8rem;
+            font-weight: 900;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .custom-zoom-btn:active {
+            background: #ffd100;
+        }
+
         /* Top HUD Action Buttons - Repositioned to Corners */
         .top-actions { position: absolute; top: 20px; left: 0; right: 0; padding: 0 20px; display: flex; justify-content: space-between; z-index: 1000; pointer-events: none; }
         .action-btn { pointer-events: auto; width: 82px; height: 82px; border-radius: 50%; border: 4px solid #fff; color: white; font-weight: bold; font-size: 0.82rem; cursor: pointer; box-shadow: 0 6px 12px rgba(0,0,0,0.4); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
@@ -31,8 +67,8 @@
         .util-circle.active-center { background: #34c759; color: white; border-color: white; } 
 
         /* Custom Pure CSS Taxi Moving Element */
-        .taxi-vector-icon { background: #ffd100; border: 2px solid #000; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.4); text-align: center; font-weight: bold; font-size: 10px; line-height: 24px; color: black; }
-        .taxi-vector-icon::after { content: ''; position: absolute; top: -5px; left: 6px; width: 10px; height: 4px; background: black; border-radius: 1px; } 
+        .taxi-vector-icon { background: #ffd100; border: 2px solid #000; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.4); text-align: center; font-weight: bold; font-size: 9px; line-height: 24px; color: black; font-family: monospace; padding: 0 2px; white-space: nowrap; }
+        .taxi-vector-icon::after { content: ''; position: absolute; top: -5px; left: 50%; transform: translateX(-50%); width: 10px; height: 4px; background: black; border-radius: 1px; } 
 
         /* Custom Drop Markers - SOLID COLORS */
         .red-man-icon { font-size: 34px; text-align: center; line-height: 34px; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.6)); }
@@ -70,6 +106,7 @@
         .btn-replay-menu { background: #5856d6 !important; color: #ffffff !important; border: 3px solid #433fa7 !important; }
         .btn-logs-menu { background: #00c7be !important; color: #ffffff !important; border: 3px solid #00a39c !important; }
         .btn-feedback-menu { background: #ff9500 !important; color: #ffffff !important; border: 3px solid #cc7700 !important; }
+        .btn-admin-menu { background: #8e8e93 !important; color: #ffffff !important; border: 3px solid #636366 !important; }
 
         /* Caution Menu Styles (Solid Yellow) */
         .caution-grid { width: 310px; }
@@ -121,11 +158,19 @@
         .chat-log-item span.time-badge { font-size: 0.72rem; color: #8e8e93; font-weight: bold; display: block; margin-bottom: 3px; text-transform: uppercase; }
         .chat-empty-msg { text-align: center; color: #8e8e93; font-weight: bold; font-size: 0.95rem; padding-top: 40px; text-transform: uppercase; }
 
-        /* SHIFT SCHEDULER POPUP STYLES */
-        .shift-modal-grid { width: 330px; }
-        .shift-time-picker { width: 100%; padding: 14px; font-size: 1.4rem; font-weight: 900; text-align: center; border-radius: 10px; border: 3px solid #1c1c1e; margin: 15px 0; font-family: inherit; color: #1c1c1e; background: #f2f2f7; }
+        /* PROFILE AND SHIFT SCHEDULER POPUP STYLES */
+        .shift-modal-grid { width: 345px; max-height: 95vh; overflow-y: auto; }
+        .profile-input-field { width: 100%; padding: 10px; font-size: 1rem; font-weight: 700; border-radius: 8px; border: 2px solid #1c1c1e; margin: 6px 0 12px 0; font-family: inherit; background: #f2f2f7; }
+        .shift-time-picker { width: 100%; padding: 10px; font-size: 1.2rem; font-weight: 900; text-align: center; border-radius: 8px; border: 2px solid #1c1c1e; margin: 6px 0 14px 0; font-family: inherit; color: #1c1c1e; background: #f2f2f7; }
         .btn-confirm-shift { background: #34c759; color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: 900; font-size: 1.2rem; cursor: pointer; text-transform: uppercase; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .profile-field-label { text-align: left; font-weight: 900; color: #1c1c1e; font-size: 0.85rem; text-transform: uppercase; display: block; }
         
+        /* ADMIN PANEL INTERFACE DESIGN */
+        .admin-grid { width: 330px; }
+        .admin-status-card { background: #f2f2f7; border: 2px solid #d1d1d6; border-radius: 10px; padding: 12px; margin-bottom: 14px; font-size: 0.9rem; color: #1c1c1e; }
+        .btn-suspend-opt { background: #ff3b30 !important; color: #ffffff !important; border: 3px solid #ff3b30; }
+        .btn-unsuspend-opt { background: #34c759 !important; color: #ffffff !important; border: 3px solid #34c759; }
+
         /* BLACKOUT SCREEN SIGN OFF STATUS OVERLAY */
         #shift-complete-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111111; z-index: 99999; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
         .complete-card { background: #ffffff; border: 5px solid #ffd100; border-radius: 24px; padding: 35px 25px; max-width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
@@ -138,6 +183,11 @@
 <body> 
 
     <div id="map"></div> 
+
+    <div id="dynamic-zoom-box" class="dynamic-zoom-container">
+        <button class="custom-zoom-btn" onclick="executeManualZoomAction(1)">+</button>
+        <button class="custom-zoom-btn" onclick="executeManualZoomAction(-1)">-</button>
+    </div>
 
     <div class="top-actions">
         <button class="action-btn btn-flag" onclick="showModal('flag-pop')">🔴<br><span>FLAG</span></button>
@@ -158,9 +208,20 @@
     <div id="screen-overlay" class="modal-overlay" onclick="hideModals()"></div> 
 
     <div id="shift-scheduler-pop" class="driver-modal shift-modal-grid" style="display: block;">
-        <span class="modal-title">Shift Setup</span>
-        <div style="text-align: center; font-weight: 900; color: #48484a; font-size: 0.95rem; text-transform: uppercase;">What time does your shift end?</div>
+        <span class="modal-title">Driver Profile Setup</span>
+        
+        <label class="profile-field-label">1. What company do you drive for?</label>
+        <input type="text" id="driver-company-input" class="profile-input-field" placeholder="e.g. Yellow Cab Company Private Limited">
+        
+        <label class="profile-field-label">2. What is your car number?</label>
+        <input type="text" id="driver-car-input" class="profile-input-field" placeholder="e.g. 342">
+        
+        <label class="profile-field-label">3. What name do you want to go by?</label>
+        <input type="text" id="driver-name-input" class="profile-input-field" placeholder="e.g. Jaswell">
+        
+        <label class="profile-field-label" style="margin-top: 6px; color: #48484a; text-align: center;">What time does your shift end?</label>
         <input type="time" id="shift-end-time-input" class="shift-time-picker">
+        
         <button class="btn-confirm-shift" onclick="initializeDriverShiftTimer()">Go On Duty</button>
     </div>
 
@@ -172,8 +233,23 @@
             <button class="btn-replay-menu full-width-btn" onclick="triggerReplayFromMenu()">🔊 REPEAT</button>
             <button class="btn-logs-menu full-width-btn" onclick="openChatLogHistoryMenuFromMenu()">💬 LOG BOOK</button>
             <button class="btn-feedback-menu full-width-btn" onclick="openFeedbackFromMenu()">📝 DRIVER FEEDBACK</button>
+            <button class="btn-admin-menu full-width-btn" onclick="accessAdminControlPortal()">🔑 ADMIN PORTAL</button>
         </div>
         <button class="btn-close-cam" onclick="hideModals()">Close Menu</button>
+    </div>
+
+    <div id="admin-control-pop" class="driver-modal admin-grid">
+        <span class="modal-title">Admin Management</span>
+        <div class="admin-status-card">
+            <strong>Driver Profile Context:</strong><br>
+            ID: <span id="admin-display-uid">---</span><br>
+            Driver: <span id="admin-display-name">---</span><br>
+            Vehicle: <span id="admin-display-vehicle">---</span>
+        </div>
+        <div class="grid-options">
+            <button class="btn-suspend-opt full-width-btn" onclick="executeAdminSuspensionAction()">⚠️ Time Out Driver</button>
+        </div>
+        <button class="btn-close-cam" onclick="backToUtilityMenu('admin-control-pop')">Back</button>
     </div>
 
     <div id="chat-log-pop" class="driver-modal chat-log-grid">
@@ -274,29 +350,15 @@
 
     <div id="shift-complete-screen">
         <div class="complete-card">
-            <div class="complete-icon">🏁</div>
-            <div class="complete-title">Shift Completed</div>
-            <div class="complete-desc">You have been signed off. The application is shut down and all audio updates are disabled. Have a safe drive home!</div>
-            <button class="btn-restart-app" onclick="restartAppSession()">Start New Shift</button>
+            <div class="complete-icon" id="status-screen-emoji">🏁</div>
+            <div class="complete-title" id="status-screen-heading">Shift Completed</div>
+            <div class="complete-desc" id="status-screen-body">You have been signed off. The application is shut down and all audio updates are disabled. Have a safe drive home!</div>
+            <button class="btn-restart-app" id="status-screen-btn" onclick="restartAppSession()">Start New Shift</button>
         </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // =========================================================================================
-        // MAP CORE INITIALIZER
-        // =========================================================================================
-        const map = L.map('map', { 
-            zoomControl: false, 
-            maxZoom: 18,
-            dragging: true,
-            touchZoom: true,
-            doubleClickZoom: true,
-            scrollWheelZoom: true
-        }).setView([49.2611, -123.1281], 16); 
-        
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map); 
-
         // Core Status States
         let vehiclePos = null;
         let lastGeocodedPos = null;
@@ -304,74 +366,172 @@
         let trackVehicleView = true; 
         let audioMuted = false;
         let wakeLockToken = null;
+        
+        // PERSISTENT MANUAL DRIVER ZOOM PREFERENCE
+        let preferredZoomDepth = 17; 
+        let zoomVisibilityTimeout = null;
 
-        // Selection variables
+        // PROFILE REGISTRATION AND ACTIVE IDENTITY MEMORY
+        let driverProfileMemory = {
+            uid: "",
+            company: "Yellow Cab Company Private Limited",
+            carNumber: "342",
+            displayName: "Jaswell",
+            isSuspended: false
+        };
+
+        // Map Core Initialization
+        const map = L.map('map', { 
+            zoomControl: false, 
+            maxZoom: 18,
+            dragging: true,
+            touchZoom: true,
+            doubleClickZoom: true,
+            scrollWheelZoom: true
+        }).setView([49.2611, -123.1281], preferredZoomDepth); 
+        
+        // High-visibility bright street tiles
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '© OpenStreetMap © CARTO'
+        }).addTo(map); 
+
         let chosenCautionType = "";
         let chosenPoliceType = "radar"; 
 
-        // Geocoding caches
         let currentAddressData = { houseNumber: "", streetName: "Unknown Street", isLoaded: false }; 
         let lastSpokenSpeechString = "";
 
-        // CHAT MEMORY PERSISTENCE TRACKING ARRAY
         let activeMarkersLog = [];
         let activeChatLogTab = "Flag";
 
-        // AUTOMATED SHIFT MANAGER CONTEXT REFERENCES
         let targetShiftEndTimestamp = null;
         let shiftMonitoringInterval = null;
         let isShiftActive = false;
 
-        // Moving Yellow Taxi Icon
-        const taxiIconStyle = L.divIcon({
-            className: 'taxi-vector-icon',
-            html: 'TAXI',
-            iconSize: [26, 26],
-            iconAnchor: [13, 13]
-        }); 
+        // Dynamic Moving Taxi Label Construction Logic
+        function generateDynamicTaxiIcon() {
+            let markerLabel = "TAXI";
+            const currentCompany = driverProfileMemory.company.toLowerCase();
+            const currentCarNumber = driverProfileMemory.carNumber.trim();
+            
+            if (currentCarNumber) {
+                if (currentCompany.includes("yellow cab") || currentCompany.includes("yc")) {
+                    markerLabel = `YC ${currentCarNumber}`;
+                } else if (currentCompany) {
+                    // Extract first character of words up to 3 chars maximum
+                    const shortName = currentCompany.split(' ').map(w => w[0]).join('').toUpperCase().substring(0, 3);
+                    markerLabel = `${shortName} ${currentCarNumber}`;
+                } else {
+                    markerLabel = `#${currentCarNumber}`;
+                }
+            }
+            
+            return L.divIcon({
+                className: 'taxi-vector-icon',
+                html: markerLabel,
+                iconSize: [L.Util.wrapNum(markerLabel.length * 7 + 10, [26, 80]), 26],
+                iconAnchor: [((markerLabel.length * 7 + 10) / 2), 13]
+            });
+        }
 
         // Set default time values for input on page load
         window.addEventListener('DOMContentLoaded', () => {
             const now = new Date();
-            // Set default picker display target to 8 hours from now
             now.setHours(now.getHours() + 8);
             const defaultTimeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
             document.getElementById('shift-end-time-input').value = defaultTimeStr;
             
-            // Require initialization blocking selection popups
+            // Prefill with traditional structured user preferences 
+            document.getElementById('driver-company-input').value = driverProfileMemory.company;
+            document.getElementById('driver-car-input').value = driverProfileMemory.carNumber;
+            document.getElementById('driver-name-input').value = driverProfileMemory.displayName;
+            
             document.getElementById('screen-overlay').style.display = 'block';
             document.getElementById('shift-scheduler-pop').style.display = 'block';
+        });
+
+        // =========================================================================================
+        // AUTO-HIDING ZOOM INTERACTION ENGINE
+        // =========================================================================================
+        function showZoomControlsTemporarily() {
+            if (!isShiftActive || driverProfileMemory.isSuspended) return;
+            const zoomBox = document.getElementById('dynamic-zoom-box');
+            zoomBox.classList.add('zoom-visible');
+            
+            clearTimeout(zoomVisibilityTimeout);
+            zoomVisibilityTimeout = setTimeout(() => {
+                zoomBox.classList.remove('zoom-visible');
+            }, 4000);
+        }
+
+        function executeManualZoomAction(direction) {
+            showZoomControlsTemporarily();
+            let currentZoom = map.getZoom();
+            let targetZoom = currentZoom + direction;
+            
+            if (targetZoom >= map.getMinZoom() && targetZoom <= map.getMaxZoom()) {
+                preferredZoomDepth = targetZoom;
+                map.setZoom(targetZoom);
+            }
+        }
+
+        map.on('zoomstart touchmove movestart pinchstart', function() {
+            showZoomControlsTemporarily();
+        });
+
+        map.on('zoomend', function() {
+            preferredZoomDepth = map.getZoom();
         });
 
         // =========================================================================================
         // AUTOMATED SHIFT SCHEDULER CONTROLLER ENGINE
         // =========================================================================================
         function initializeDriverShiftTimer() {
+            const companyVal = document.getElementById('driver-company-input').value.trim();
+            const carVal = document.getElementById('driver-car-input').value.trim();
+            const nameVal = document.getElementById('driver-name-input').value.trim();
             const timeInputValue = document.getElementById('shift-end-time-input').value;
+            
+            if (!companyVal || !carVal || !nameVal) {
+                alert("ALL PROFILE INFORMATION FIELDS ARE MANDATORY TO SECURE DRIVER ANCHOR IDENTITY.");
+                return;
+            }
             if (!timeInputValue) {
                 alert("PLEASE SELECT A VALID SHIFT END TIME.");
                 return;
+            }
+
+            // Lock Profile Data Structures
+            driverProfileMemory.company = companyVal;
+            driverProfileMemory.carNumber = carVal;
+            driverProfileMemory.displayName = nameVal;
+            
+            // Assign Permanent Unique ID Tracking Number if missing
+            if (!driverProfileMemory.uid) {
+                driverProfileMemory.uid = "DRV-" + Math.floor(100000 + Math.random() * 900000);
             }
 
             const [hours, minutes] = timeInputValue.split(':').map(Number);
             const now = new Date();
             let targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, 0, 0);
 
-            // If target time is earlier than current time, assume it means tomorrow morning (cross-midnight shifts)
             if (targetDate <= now) {
                 targetDate.setDate(targetDate.getDate() + 1);
             }
 
             targetShiftEndTimestamp = targetDate.getTime();
             isShiftActive = true;
+            driverProfileMemory.isSuspended = false;
 
-            // Clear any active previous timers if they exist
             if (shiftMonitoringInterval) clearInterval(shiftMonitoringInterval);
-
-            // Start clock polling tracking check loop updates every single second
             shiftMonitoringInterval = setInterval(checkShiftTimeExpirationStatus, 1000);
 
-            // Close the initiation modal setup sequence safely
+            // Re-render vehicle marker with dynamic contextual layout configuration updates
+            if (vehicleMarker && vehiclePos) {
+                map.removeLayer(vehicleMarker);
+                vehicleMarker = L.marker(vehiclePos, { icon: generateDynamicTaxiIcon() }).addTo(map);
+            }
+
             document.getElementById('shift-scheduler-pop').style.display = 'none';
             document.getElementById('screen-overlay').style.display = 'none';
         }
@@ -389,7 +549,6 @@
             isShiftActive = false;
             if (shiftMonitoringInterval) clearInterval(shiftMonitoringInterval);
             
-            // 1. Permanently mute the voice broadcast machine engine
             audioMuted = true;
             const btn = document.getElementById('mute-toggle-btn');
             if (btn) {
@@ -397,20 +556,24 @@
                 btn.innerHTML = "AUDIO<br>MUTED";
             }
 
-            // 2. Clear out TTS pipelines immediately
             if (window.speechSynthesis) {
                 window.speechSynthesis.cancel();
             }
 
-            // 3. Close open operational selection view screen layers
             hideModals();
-
-            // 4. Drop map engine position tracking watch tasks
             trackVehicleView = false;
+            document.getElementById('dynamic-zoom-box').classList.remove('zoom-visible');
 
-            // 5. Throw absolute blackout control mask panel overlay over everything
+            // Reset Default Operational Content Text Layouts
+            document.getElementById('status-screen-emoji').innerText = "🏁";
+            document.getElementById('status-screen-heading').innerText = "Shift Completed";
+            document.getElementById('status-screen-body').innerText = "You have been signed off. The application is shut down and all audio updates are disabled. Have a safe drive home!";
+            
+            const restartBtn = document.getElementById('status-screen-btn');
+            restartBtn.style.display = "block";
+            restartBtn.innerText = "Start New Shift";
+
             document.getElementById('shift-complete-screen').style.display = 'flex';
-            console.log("SHIFT TIMER TERMINATED: Application context isolated and signed off.");
         }
 
         function restartAppSession() {
@@ -422,13 +585,57 @@
                 btn.innerHTML = "AUDIO<br>ON";
             }
             
-            // Re-open initiation input choice interface workflow dialog box
             document.getElementById('screen-overlay').style.display = 'block';
             document.getElementById('shift-scheduler-pop').style.display = 'block';
         }
 
         // =========================================================================================
-        // NEW MENU OVERLAY ROUTING SELECTIONS
+        // ADMIN PORTAL PIPELINE AND ENFORCEMENT PROTOCOLS
+        // =========================================================================================
+        function accessAdminControlPortal() {
+            hideModals();
+            const challengeCode = prompt("ENTER CONFIDENTIAL ADMINISTRATIVE DISPATCH PASSCODE:");
+            if (challengeCode === null) return;
+            
+            if (challengeCode === "7777") {
+                document.getElementById('admin-display-uid').innerText = driverProfileMemory.uid || "Pending";
+                document.getElementById('admin-display-name').innerText = driverProfileMemory.displayName || "Unknown";
+                document.getElementById('admin-display-vehicle').innerText = `${driverProfileMemory.company} (#${driverProfileMemory.carNumber})`;
+                showModal('admin-control-pop');
+            } else {
+                alert("ACCESS DENIED. INVALID AUTHORIZATION SECURITY KEY CODE.");
+            }
+        }
+
+        function executeAdminSuspensionAction() {
+            const verification = confirm(`CONFIRM ENFORCEMENT: Place driver "${driverProfileMemory.displayName}" on a suspension time out session immediately?`);
+            if (!verification) return;
+
+            driverProfileMemory.isSuspended = true;
+            isShiftActive = false;
+            
+            if (shiftMonitoringInterval) clearInterval(shiftMonitoringInterval);
+            
+            audioMuted = true;
+            const btn = document.getElementById('mute-toggle-btn');
+            if (btn) { btn.className = "util-circle active-mute"; btn.innerHTML = "AUDIO<br>MUTED"; }
+            if (window.speechSynthesis) window.speechSynthesis.cancel();
+
+            hideModals();
+            trackVehicleView = false;
+            document.getElementById('dynamic-zoom-box').classList.remove('zoom-visible');
+
+            // Hard lock the screen status layout block to prevent dashboard recovery escape
+            document.getElementById('status-screen-emoji').innerText = "⚠️";
+            document.getElementById('status-screen-heading').innerText = "Profile Suspended";
+            document.getElementById('status-screen-body').innerText = `Attention: Account status has been locked down by admin management. Your profile (${driverProfileMemory.uid}) is placed inside an active time out penalty. Communication modules disabled.`;
+            document.getElementById('status-screen-btn').style.display = "none"; 
+
+            document.getElementById('shift-complete-screen').style.display = 'flex';
+        }
+
+        // =========================================================================================
+        // MENU OVERLAY ROUTING SELECTIONS
         // =========================================================================================
         function openCautionSelectionFromMenu() {
             hideModals();
@@ -460,9 +667,6 @@
             showModal('utility-menu-pop');
         }
 
-        // =========================================================================================
-        // CAMERA ACTION CONTROLLER (NEW TAB BYPASS MECHANISM)
-        // =========================================================================================
         function openCameraListMenu() {
             showModal('camera-menu-pop');
         } 
@@ -471,36 +675,37 @@
             window.open(targetUrl, '_blank');
         } 
 
-        // GEOLOCATION ENGINE
+        // Geolocation Engine Hooks
         map.locate({ watch: true, enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }); 
 
         map.on('locationfound', function(e) {
+            if (driverProfileMemory.isSuspended) return;
             vehiclePos = e.latlng;
             if (!vehicleMarker) {
-                vehicleMarker = L.marker(e.latlng, { icon: taxiIconStyle }).addTo(map);
-                map.setView(e.latlng, 17);
+                vehicleMarker = L.marker(e.latlng, { icon: generateDynamicTaxiIcon() }).addTo(map);
+                map.setView(e.latlng, preferredZoomDepth);
             } else {
                 vehicleMarker.setLatLng(e.latlng);
             } 
             if (trackVehicleView) {
-                map.setView(e.latlng, 17);
+                map.setView(e.latlng, preferredZoomDepth);
             } 
             fetchAddressFromCoordinates(e.latlng);
         }); 
 
         setInterval(() => {
-            if (trackVehicleView && vehiclePos) {
-                map.setView(vehiclePos, 17);
+            if (trackVehicleView && vehiclePos && !driverProfileMemory.isSuspended) {
+                map.setView(vehiclePos, preferredZoomDepth);
             }
         }, 2000);
         
         map.on('dragstart', function() {
+            if (!isShiftActive) return;
             trackVehicleView = false;
             const btn = document.getElementById('lock-center-btn');
             btn.className = "util-circle";
             btn.innerHTML = "MAP<br>FREE";
         }); 
-
 
         // =========================================================================================
         // REVERSE GEOLOCATION ENGINE
@@ -540,7 +745,6 @@
         } 
 
         function showModal(id) {
-            // Block normal interaction screens if driver has expired active session tasks
             if (!isShiftActive && id !== 'shift-scheduler-pop') return;
             
             document.getElementById('screen-overlay').style.display = 'block';
@@ -548,7 +752,6 @@
         } 
 
         function hideModals() {
-            // Block removal of overlay layout profiles if tracking activation setups remain undone
             if (!isShiftActive) return;
             
             document.getElementById('screen-overlay').style.display = 'none';
@@ -556,18 +759,18 @@
         } 
 
         function handleRecenter() {
-            if (!isShiftActive) return;
+            if (!isShiftActive || driverProfileMemory.isSuspended) return;
             trackVehicleView = true;
             const btn = document.getElementById('lock-center-btn');
             btn.className = "util-circle active-center";
             btn.innerHTML = "MAP<br>LOCKED";
             if (vehiclePos) {
-                map.setView(vehiclePos, 17);
+                map.setView(vehiclePos, preferredZoomDepth);
             }
         } 
 
         function handleMuteToggle() {
-            if (!isShiftActive) return;
+            if (!isShiftActive || driverProfileMemory.isSuspended) return;
             audioMuted = !audioMuted;
             const btn = document.getElementById('mute-toggle-btn');
             if(audioMuted) {
@@ -578,7 +781,6 @@
                 btn.innerHTML = "AUDIO<br>ON";
             }
         } 
-
 
         // =========================================================================================
         // DISPATCH PASSENGER FLAG MARKER
@@ -608,7 +810,6 @@
                     displayString = `Hotel Dispatch Flag waiting at ${completeAddress}`;
                 }
 
-                // Append item entry right into tracking system
                 activeMarkersLog.push({
                     category: 'Flag',
                     timestamp: Date.now(),
@@ -634,9 +835,8 @@
             });
         } 
 
-
         // =========================================================================================
-        // UPDATED CAUTION LOGIC SUBROUTINES WITH CUSTOM ICON DROP RULES
+        // CAUTION CONDITIONS
         // =========================================================================================
         function selectCautionType(type) {
             if (!isShiftActive) return;
@@ -692,7 +892,6 @@
                 const dynamicMarker = L.marker(targetPos, { icon: cautionDivIcon }).addTo(map); 
                 const completeAddress = currentAddressData.houseNumber ? `${currentAddressData.houseNumber} ${currentAddressData.streetName}` : currentAddressData.streetName; 
 
-                // Append item entry right into tracking system
                 activeMarkersLog.push({
                     category: 'Caution',
                     timestamp: Date.now(),
@@ -720,9 +919,8 @@
             });
         } 
 
-
         // =========================================================================================
-        // POLICE PIPELINE SNIPPET
+        // POLICE DETECTION MARKERS
         // =========================================================================================
         function selectPoliceType(type) {
             if (!isShiftActive) return;
@@ -751,7 +949,6 @@
                 const officerMarker = L.marker(targetPos, { icon: policeIcon }).addTo(map);
                 const completeAddress = currentAddressData.houseNumber ? `${currentAddressData.houseNumber} ${currentAddressData.streetName}` : currentAddressData.streetName; 
 
-                // Append item entry right into tracking system
                 activeMarkersLog.push({
                     category: 'Police',
                     timestamp: Date.now(),
@@ -776,10 +973,6 @@
             });
         } 
 
-
-        // =========================================================================================
-        // AUDIO ADDRESS CONVERTER
-        // =========================================================================================
         function breakHouseNumbersIntoCouples(numberStr) {
             if (!numberStr || isNaN(numberStr)) return numberStr;
             
@@ -802,13 +995,11 @@
             return numberStr;
         } 
 
-
         // =========================================================================================
-        // CENTRAL TEXT-TO-SPEECH BROADCAST MACHINE
+        // TEXT-TO-SPEECH ANNOUNCEMENTS AUDIO ENGINE
         // =========================================================================================
         function dispatchAudioNarration(category, payload) {
-            // Absolute blocker if shift limit reached or audio toggled down
-            if (!isShiftActive || audioMuted) return; 
+            if (!isShiftActive || audioMuted || driverProfileMemory.isSuspended) return; 
 
             const spokenHouseNumber = breakHouseNumbersIntoCouples(currentAddressData.houseNumber);
             const addressAudioString = spokenHouseNumber ? `${spokenHouseNumber} ${currentAddressData.streetName}` : currentAddressData.streetName;
@@ -845,33 +1036,27 @@
             window.speechSynthesis.speak(clearHardwareBuffer); 
 
             setTimeout(() => {
+                if (driverProfileMemory.isSuspended) return;
                 const utterance = new SpeechSynthesisUtterance(finalSpeechString);
                 utterance.rate = 1.0; 
                 window.speechSynthesis.speak(utterance);
             }, 1500);
         } 
 
-
-        // =========================================================================================
-        // INSTANT AUDIO REPLAY
-        // =========================================================================================
         function replayLastAudioNarration() {
-            if (!isShiftActive || !lastSpokenSpeechString) return;
+            if (!isShiftActive || !lastSpokenSpeechString || driverProfileMemory.isSuspended) return;
             
             const clearHardwareBuffer = new SpeechSynthesisUtterance("");
             window.speechSynthesis.speak(clearHardwareBuffer); 
 
             setTimeout(() => {
+                if (driverProfileMemory.isSuspended) return;
                 const utterance = new SpeechSynthesisUtterance(lastSpokenSpeechString);
                 utterance.rate = 1.0; 
                 window.speechSynthesis.speak(utterance);
             }, 200);
         }
 
-
-        // =========================================================================================
-        // DRIVER SUGGESTION HANDLING SUBROUTINE
-        // =========================================================================================
         function submitDriverSuggestion() {
             if (!isShiftActive) return;
             const field = document.getElementById('driver-suggestion-text');
@@ -884,6 +1069,8 @@
             
             console.log("SUGGESTION CAPTURED: ", {
                 timestamp: new Date().toISOString(),
+                driverId: driverProfileMemory.uid,
+                driverName: driverProfileMemory.displayName,
                 coordinates: vehiclePos ? [vehiclePos.lat, vehiclePos.lng] : "No GPS context",
                 messageContent: note
             });
@@ -893,9 +1080,8 @@
             alert("Thank you! Your suggestion has been recorded.");
         }
 
-
         // =========================================================================================
-        // CHAT ENGINE AND HISTORY NAVIGATION LOGIC PIPELINE
+        // CHAT LOG HISTORY PANEL ARCHITECTURE
         // =========================================================================================
         function openChatLogHistoryMenu() {
             if (!isShiftActive) return;
@@ -946,7 +1132,7 @@
                     centerBtn.className = "util-circle";
                     centerBtn.innerHTML = "MAP<br>FREE";
                     
-                    map.setView(item.latlng, 17);
+                    map.setView(item.latlng, preferredZoomDepth);
                     
                     let customHistoryIcon;
                     let popupContentHtml = "";
@@ -1006,10 +1192,7 @@
             });
         }
 
-
-        // =========================================================================================
-        // SCREEN ANTI-BLACKOUT WAKELOCK
-        // =========================================================================================
+        // Screen Wake Lock Handler
         async function maintainScreenWakeLock() {
             try {
                 if ('wakeLock' in navigator) {
