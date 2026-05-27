@@ -59,12 +59,19 @@
         .btn-main-menu { background: #444446; color: white; border-color: #fff; }
 
         /* Middle Side Utility Buttons */
-        .side-util { position: absolute; top: 50%; transform: translateY(-50%); z-index: 1000; display: flex; flex-direction: column; gap: 20px; }
-        .left-side { left: 15px; }
-        .right-side { right: 15px; }
+        .side-util { position: absolute; z-index: 1000; display: flex; flex-direction: column; gap: 20px; }
+        .left-side { left: 15px; top: 50%; transform: translateY(-50%); }
+        
+        /* Repositioned Map Lock to precise center right layout */
+        .right-side-center { right: 15px; top: 50%; transform: translateY(-50%); position: absolute; z-index: 1000; }
+        
+        /* Repositioned Yellow Profile Button to extreme bottom right layout */
+        .right-side-bottom { right: 15px; bottom: 30px; position: absolute; z-index: 1000; }
+
         .util-circle { width: 70px; height: 70px; border-radius: 50%; background: #ffffff; border: 3px solid #1c1c1e; color: #1c1c1e; font-weight: 900; font-size: 0.85rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; text-align: center; }
         .util-circle.active-mute { background: #ff453a; color: white; border-color: white; }
         .util-circle.active-center { background: #34c759; color: white; border-color: white; } 
+        .util-circle.profile-hud-btn { background: #ffd100; color: #1c1c1e; border-color: #1c1c1e; }
 
         /* Custom Pure CSS Taxi Moving Element */
         .taxi-vector-icon { background: #ffd100; border: 2px solid #000; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.4); text-align: center; font-weight: bold; font-size: 9px; line-height: 24px; color: black; font-family: monospace; padding: 0 2px; white-space: nowrap; }
@@ -100,13 +107,14 @@
         .btn-flag-hotel { grid-column: span 2; background: #5856d6 !important; color: #ffffff !important; border: 3px solid #5856d6; }
 
         /* BRIGHT THEMED UTILITY PANEL MENU BUTTONS */
-        .utility-menu-grid { width: 340px; }
+        .utility-menu-grid { width: 340px; max-height: 90vh; overflow-y: auto; }
         .btn-caution-menu { background: #ffcc00 !important; color: #000000 !important; border: 3px solid #e6b800 !important; font-weight: 900 !important; }
         .btn-cameras-menu { background: #34c759 !important; color: #ffffff !important; border: 3px solid #28a745 !important; }
         .btn-replay-menu { background: #5856d6 !important; color: #ffffff !important; border: 3px solid #433fa7 !important; }
         .btn-logs-menu { background: #00c7be !important; color: #ffffff !important; border: 3px solid #00a39c !important; }
         .btn-feedback-menu { background: #ff9500 !important; color: #ffffff !important; border: 3px solid #cc7700 !important; }
         .btn-admin-menu { background: #8e8e93 !important; color: #ffffff !important; border: 3px solid #636366 !important; }
+        .btn-matching-menu { background: #af52de !important; color: #ffffff !important; border: 3px solid #923cb8 !important; }
 
         /* Caution Menu Styles (Solid Yellow) */
         .caution-grid { width: 310px; }
@@ -161,6 +169,7 @@
         /* PROFILE AND SHIFT SCHEDULER POPUP STYLES */
         .shift-modal-grid { width: 345px; max-height: 95vh; overflow-y: auto; }
         .profile-input-field { width: 100%; padding: 10px; font-size: 1rem; font-weight: 700; border-radius: 8px; border: 2px solid #1c1c1e; margin: 6px 0 12px 0; font-family: inherit; background: #f2f2f7; }
+        .profile-select-field { width: 100%; padding: 10px; font-size: 1rem; font-weight: 900; border-radius: 8px; border: 2px solid #1c1c1e; margin: 6px 0 12px 0; font-family: inherit; background: #ffd100; color: #000; }
         .shift-time-picker { width: 100%; padding: 10px; font-size: 1.2rem; font-weight: 900; text-align: center; border-radius: 8px; border: 2px solid #1c1c1e; margin: 6px 0 14px 0; font-family: inherit; color: #1c1c1e; background: #f2f2f7; }
         .btn-confirm-shift { background: #34c759; color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: 900; font-size: 1.2rem; cursor: pointer; text-transform: uppercase; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .profile-field-label { text-align: left; font-weight: 900; color: #1c1c1e; font-size: 0.85rem; text-transform: uppercase; display: block; }
@@ -178,6 +187,26 @@
         .complete-title { font-size: 1.8rem; font-weight: 900; color: #1c1c1e; margin-bottom: 10px; text-transform: uppercase; }
         .complete-desc { font-size: 1.1rem; color: #48484a; font-weight: bold; line-height: 1.4; margin-bottom: 25px; }
         .btn-restart-app { background: #1c1c1e; color: #ffd100; border: 3px solid #ffd100; padding: 14px 28px; font-weight: 900; font-size: 1.1rem; border-radius: 10px; cursor: pointer; text-transform: uppercase; }
+
+        /* NEW DRIVER MATCHING ENGINE GRAPHICAL INTERFACE WORKSPACE */
+        .matching-grid { width: 375px; max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; padding: 16px; }
+        .match-card-info { background: #f2f2f7; border: 2px solid #af52de; border-radius: 10px; padding: 10px; font-size: 0.85rem; color: #1c1c1e; margin-bottom: 12px; font-weight: 700; }
+        .match-input-row { display: flex; gap: 8px; margin-bottom: 10px; align-items: center; justify-content: space-between; }
+        .match-input-row label { font-weight: 900; font-size: 0.82rem; color: #1c1c1e; text-transform: uppercase; }
+        .match-calendar-input { padding: 8px; border: 2px solid #1c1c1e; border-radius: 6px; font-weight: 900; font-family: inherit; font-size: 0.9rem; }
+        .match-select-shift { padding: 8px; border: 2px solid #1c1c1e; border-radius: 6px; font-weight: 900; font-family: inherit; background: #fff; font-size: 0.9rem; }
+        .btn-log-availability { background: #af52de; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 900; font-size: 1rem; cursor: pointer; text-transform: uppercase; margin-bottom: 14px; width: 100%; box-shadow: 0 3px 6px rgba(0,0,0,0.15); }
+        
+        /* Redesigned Dual List Columns Layout Frameworks */
+        .dual-list-layout-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px; }
+        .match-column-container { display: flex; flex-direction: column; }
+        .match-list-heading { font-size: 0.78rem; font-weight: 900; color: #1c1c1e; text-transform: uppercase; border-bottom: 2px solid #af52de; padding-bottom: 4px; margin-bottom: 8px; text-align: left; letter-spacing: -0.3px; }
+        .matching-entries-scroller { height: 200px; overflow-y: auto; background: #fafafa; border: 2px dashed #d1d1d6; border-radius: 8px; padding: 6px; margin-bottom: 10px; }
+        
+        .match-item-row { background: white; border: 2px solid #e5e5ea; border-radius: 6px; padding: 8px; margin-bottom: 6px; font-size: 0.82rem; font-weight: 700; color: #1c1c1e; text-align: left; display: flex; flex-direction: column; gap: 3px; position: relative; }
+        .match-item-row.is-perfect-match { border-color: #34c759; background: #f2fdf4; }
+        .match-badge { position: absolute; top: 4px; right: 4px; background: #34c759; color: white; font-size: 0.58rem; padding: 1px 4px; border-radius: 8px; font-weight: 900; text-transform: uppercase; }
+        .match-call-btn { display: inline-flex; align-items: center; justify-content: center; background: #007aff; color: white; text-decoration: none; font-weight: 900; padding: 4px 6px; border-radius: 4px; font-size: 0.72rem; width: 100%; margin-top: 4px; text-transform: uppercase; text-align: center; }
     </style>
 </head>
 <body> 
@@ -201,33 +230,65 @@
     <div class="side-util left-side">
         <button id="mute-toggle-btn" class="util-circle" onclick="handleMuteToggle()">AUDIO<br>ON</button>
     </div>
-    <div class="side-util right-side">
+    
+    <div class="right-side-center">
         <button id="lock-center-btn" class="util-circle active-center" onclick="handleRecenter()">MAP<br>LOCKED</button>
     </div> 
+
+    <div class="right-side-bottom">
+        <button id="profile-hud-trigger-btn" class="util-circle profile-hud-btn" onclick="openFullProfileSettings()">DRV<br>#342</button>
+    </div>
 
     <div id="screen-overlay" class="modal-overlay" onclick="hideModals()"></div> 
 
     <div id="shift-scheduler-pop" class="driver-modal shift-modal-grid" style="display: block;">
-        <span class="modal-title">Driver Profile Setup</span>
+        <span class="modal-title" id="profile-modal-main-title">Driver Profile Setup</span>
         
-        <label class="profile-field-label">1. What company do you drive for?</label>
-        <input type="text" id="driver-company-input" class="profile-input-field" placeholder="e.g. Yellow Cab Company Private Limited">
+        <div id="profile-setup-fields-wrapper">
+            <label class="profile-field-label">1. What company do you drive for?</label>
+            <select id="driver-company-select" class="profile-select-field" style="background:#fff;" onchange="handleCompanySelectionFramework(this)">
+                <option value="Yellow Cab Company Private Limited">Yellow Cab Company Private Limited</option>
+                <option value="Black Top Cabs">Black Top Cabs</option>
+                <option value="Maclure's Cabs">Maclure's Cabs</option>
+                <option value="Vancouver Taxi">Vancouver Taxi</option>
+                <option value="__ADD_NEW_COMPANY__">[ + Add Custom Fleet Company ]</option>
+            </select>
+            
+            <label class="profile-field-label">2. What is your car number?</label>
+            <input type="text" id="driver-car-input" class="profile-input-field" placeholder="e.g. 342">
+            
+            <label class="profile-field-label">3. What name do you want to go by?</label>
+            <input type="text" id="driver-name-input" class="profile-input-field" placeholder="e.g. Jaswell">
+
+            <label class="profile-field-label">4. Your Vehicle Association Status?</label>
+            <select id="driver-role-select" class="profile-select-field">
+                <option value="Driver">I am a Driver (Looking for shifts/cars)</option>
+                <option value="Owner">I am the Car Owner (Looking for relief drivers)</option>
+            </select>
+
+            <label class="profile-field-label">5. Contact Phone Number (Optional)</label>
+            <input type="tel" id="driver-phone-input" class="profile-input-field" placeholder="e.g. 604-555-0199 (Required for Driver Matching)">
+        </div>
         
-        <label class="profile-field-label">2. What is your car number?</label>
-        <input type="text" id="driver-car-input" class="profile-input-field" placeholder="e.g. 342">
+        <div id="profile-saved-identity-hud" style="display:none; background:#f2f2f7; padding:10px; border-radius:8px; border:2px dashed #8e8e93; margin-bottom:12px; font-size:0.88rem; font-weight:700; color:#1c1c1e; text-align:center;">
+            Active Identity Confirmed: <span id="hud-saved-name" style="color:#007aff;">---</span><br>
+            <span id="hud-saved-fleet" style="font-size:0.75rem; color:#636366;">---</span>
+            <button class="btn-close-cam" style="margin-top: 8px; padding: 6px; font-size: 0.8rem;" onclick="forceExpandProfileEditor()">Modify Profile Details</button>
+        </div>
+
+        <div id="shift-end-time-picker-section">
+            <label class="profile-field-label" style="margin-top: 6px; color: #48484a; text-align: center;">What time does your shift end?</label>
+            <input type="time" id="shift-end-time-input" class="shift-time-picker">
+        </div>
         
-        <label class="profile-field-label">3. What name do you want to go by?</label>
-        <input type="text" id="driver-name-input" class="profile-input-field" placeholder="e.g. Jaswell">
-        
-        <label class="profile-field-label" style="margin-top: 6px; color: #48484a; text-align: center;">What time does your shift end?</label>
-        <input type="time" id="shift-end-time-input" class="shift-time-picker">
-        
-        <button class="btn-confirm-shift" onclick="initializeDriverShiftTimer()">Go On Duty</button>
+        <button id="profile-submit-action-btn" class="btn-confirm-shift" onclick="initializeDriverShiftTimer()">Go On Duty</button>
+        <button id="profile-close-action-btn" class="btn-close-cam" style="display: none; margin-top: 10px;" onclick="hideModals()">Close Settings</button>
     </div>
 
     <div id="utility-menu-pop" class="driver-modal utility-menu-grid">
         <span class="modal-title">Utility Panel</span>
         <div class="grid-options">
+            <button class="btn-matching-menu full-width-btn" onclick="openDriverMatchingPortal()">👥 DRIVER MATCHING</button>
             <button class="btn-caution-menu full-width-btn" onclick="openCautionSelectionFromMenu()">👷 HAZARD</button>
             <button class="btn-cameras-menu full-width-btn" onclick="openCamerasFromMenu()">📷 CAMERAS</button>
             <button class="btn-replay-menu full-width-btn" onclick="triggerReplayFromMenu()">🔊 REPEAT</button>
@@ -236,6 +297,45 @@
             <button class="btn-admin-menu full-width-btn" onclick="accessAdminControlPortal()">🔑 ADMIN PORTAL</button>
         </div>
         <button class="btn-close-cam" onclick="hideModals()">Close Menu</button>
+    </div>
+
+    <div id="driver-matching-pop" class="driver-modal matching-grid">
+        <span class="modal-title">📅 Driver & Car Exchange</span>
+        <div class="match-card-info">
+            Current Profile Identity Role: <span id="match-ui-current-role" style="color:#af52de;">---</span><br>
+            Verified Contact Link: <span id="match-ui-current-phone">None Added</span>
+        </div>
+        
+        <div class="match-input-row">
+            <label>Target Date:</label>
+            <input type="date" id="match-calendar-date" class="match-calendar-input" onchange="renderMatchingBoardEntries()">
+        </div>
+        <div class="match-input-row">
+            <label>Operation Shift:</label>
+            <select id="match-calendar-shift" class="match-select-shift" onchange="renderMatchingBoardEntries()">
+                <option value="Day Shift">Day Shift (AM)</option>
+                <option value="Night Shift">Night Shift (PM)</option>
+            </select>
+        </div>
+        <div class="match-input-row">
+            <label>Target Fleet Company:</label>
+            <select id="match-company-target-select" class="profile-select-field" style="margin:0; width:55%; padding:6px; font-size:0.85rem; background:#fff;" onchange="renderMatchingBoardEntries()">
+                </select>
+        </div>
+        <button class="btn-log-availability" onclick="submitAvailabilityToMatchPool()">Publish Availability</button>
+        
+        <div class="dual-list-layout-wrapper">
+            <div class="match-column-container">
+                <div class="match-list-heading">👥 Relief Drivers</div>
+                <div id="matching-drivers-column-target" class="matching-entries-scroller"></div>
+            </div>
+            <div class="match-column-container">
+                <div class="match-list-heading">🚖 Fleet Vehicles</div>
+                <div id="matching-cars-column-target" class="matching-entries-scroller"></div>
+            </div>
+        </div>
+        
+        <button class="btn-close-cam" onclick="backToUtilityMenu('driver-matching-pop')">Back</button>
     </div>
 
     <div id="admin-control-pop" class="driver-modal admin-grid">
@@ -371,14 +471,36 @@
         let preferredZoomDepth = 17; 
         let zoomVisibilityTimeout = null;
 
+        // GLOBAL ALL-TIME PERSISTENT COMPANY DIRECTORY CACHE
+        let activeCompanyRegistry = [
+            "Yellow Cab Company Private Limited",
+            "Black Top Cabs",
+            "Maclure's Cabs",
+            "Vancouver Taxi"
+        ];
+
         // PROFILE REGISTRATION AND ACTIVE IDENTITY MEMORY
         let driverProfileMemory = {
             uid: "",
             company: "Yellow Cab Company Private Limited",
             carNumber: "342",
             displayName: "Jaswell",
-            isSuspended: false
+            isSuspended: false,
+            role: "Driver",       // Enhanced Storage Memory
+            phoneNumber: ""       // Enhanced Storage Memory
         };
+
+        // TRACKS IF A BASE ANCHOR PROFILE RECORD ALREADY EXISTS
+        let isProfileDataAnchored = false;
+
+        // NEW GLOBAL STORAGE CACHE SIMULATING DISPATCH MATCH POOL FEED
+        let mockSharedMatchingPool = [
+            { id: "M-1", name: "Paul S.", role: "Driver", company: "Yellow Cab Company Private Limited", carNumber: "N/A", date: "2026-06-01", shift: "Day Shift", phone: "604-555-9876" },
+            { id: "M-2", name: "M. Pabla", role: "Owner", company: "Yellow Cab Company Private Limited", carNumber: "154", date: "2026-06-02", shift: "Night Shift", phone: "778-555-1234" },
+            { id: "M-3", name: "David K.", role: "Driver", company: "Yellow Cab Company Private Limited", carNumber: "N/A", date: "2026-05-26", shift: "Day Shift", phone: "604-555-4321" },
+            { id: "M-4", name: "S. Dhillon", role: "Owner", company: "Yellow Cab Company Private Limited", carNumber: "210", date: "2026-05-26", shift: "Day Shift", phone: "778-555-8899" },
+            { id: "M-5", name: "John Doe", role: "Driver", company: "Black Top Cabs", carNumber: "N/A", date: "2026-05-26", shift: "Day Shift", phone: "604-555-0000" }
+        ];
 
         // Map Core Initialization
         const map = L.map('map', { 
@@ -434,6 +556,52 @@
             });
         }
 
+        // POPULATES BOTH DROPDOWN INTERFACE SCHEMES SYNCHRONOUSLY
+        function syncCompanyDropdownUIFields() {
+            const profileSelect = document.getElementById('driver-company-select');
+            const matchSelect = document.getElementById('match-company-target-select');
+            
+            // Rebuild main settings menu selector items
+            let profileOptionsHtml = "";
+            activeCompanyRegistry.forEach(comp => {
+                profileOptionsHtml += `<option value="${comp}">${comp}</option>`;
+            });
+            profileOptionsHtml += `<option value="__ADD_NEW_COMPANY__">[ + Add Custom Fleet Company ]</option>`;
+            profileSelect.innerHTML = profileOptionsHtml;
+            
+            // Rebuild driver match filter selector items
+            let matchOptionsHtml = "";
+            activeCompanyRegistry.forEach(comp => {
+                matchOptionsHtml += `<option value="${comp}">${comp}</option>`;
+            });
+            matchSelect.innerHTML = matchOptionsHtml;
+        }
+
+        // HANDLES AD-HOC INTERACTIVE REGISTRATION PROCEDURES FOR NEW TAXI ENTITIES
+        function handleCompanySelectionFramework(selectElement) {
+            if (selectElement.value === "__ADD_NEW_COMPANY__") {
+                const customFirmName = prompt("ENTER FORMAL REGISTERED NAME FOR YOUR NEW TAXI COMPANY:");
+                
+                if (customFirmName && customFirmName.trim() !== "") {
+                    const cleanedName = customFirmName.trim();
+                    
+                    // Add to system registry array cache if it is unique
+                    if (!activeCompanyRegistry.includes(cleanedName)) {
+                        activeCompanyRegistry.push(cleanedName);
+                    }
+                    
+                    // Update and refresh options across all views
+                    syncCompanyDropdownUIFields();
+                    
+                    // Force selected value to match the newly added firm asset entry
+                    selectElement.value = cleanedName;
+                } else {
+                    // Fall back to first option item if registration cancels out
+                    selectElement.value = activeCompanyRegistry[0];
+                }
+            }
+        }
+
         // Set default time values for input on page load
         window.addEventListener('DOMContentLoaded', () => {
             const now = new Date();
@@ -441,14 +609,139 @@
             const defaultTimeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
             document.getElementById('shift-end-time-input').value = defaultTimeStr;
             
+            // Initialize dropdown elements array data schemas
+            syncCompanyDropdownUIFields();
+            
             // Prefill with traditional structured user preferences 
-            document.getElementById('driver-company-input').value = driverProfileMemory.company;
+            document.getElementById('driver-company-select').value = driverProfileMemory.company;
             document.getElementById('driver-car-input').value = driverProfileMemory.carNumber;
             document.getElementById('driver-name-input').value = driverProfileMemory.displayName;
+            document.getElementById('driver-role-select').value = driverProfileMemory.role;
+            document.getElementById('driver-phone-input').value = driverProfileMemory.phoneNumber;
+            
+            // Prefill the Match Target Company select menu with current profile company value
+            document.getElementById('match-company-target-select').value = driverProfileMemory.company;
+            
+            // Set Default value for the Match calendar tool to today
+            document.getElementById('match-calendar-date').value = new Date().toISOString().split('T')[0];
+            
+            // Check if context structures exist to anchor the profile immediately
+            if (driverProfileMemory.company && driverProfileMemory.carNumber && driverProfileMemory.displayName) {
+                isProfileDataAnchored = true;
+                toggleProfileModalFieldsDisplay(true);
+            } else {
+                isProfileDataAnchored = false;
+                toggleProfileModalFieldsDisplay(false);
+            }
+            
+            updateHudProfileTriggerButtonLabel();
             
             document.getElementById('screen-overlay').style.display = 'block';
             document.getElementById('shift-scheduler-pop').style.display = 'block';
         });
+
+        // Helper function to update the map side button label
+        function updateHudProfileTriggerButtonLabel() {
+            const btn = document.getElementById('profile-hud-trigger-btn');
+            if (btn) {
+                if (driverProfileMemory.carNumber) {
+                    btn.innerHTML = `CAR<br>#${driverProfileMemory.carNumber}`;
+                } else {
+                    btn.innerHTML = `PROF<br>EDIT`;
+                }
+            }
+        }
+
+        // Helper function to hide profile input layers if identity data is already cached
+        function toggleProfileModalFieldsDisplay(isAnchored) {
+            const fieldsWrapper = document.getElementById('profile-setup-fields-wrapper');
+            const identityHud = document.getElementById('profile-saved-identity-hud');
+            
+            if (isAnchored) {
+                fieldsWrapper.style.display = 'none';
+                identityHud.style.display = 'block';
+                document.getElementById('hud-saved-name').innerText = `${driverProfileMemory.displayName} (${driverProfileMemory.role.toUpperCase()})`;
+                document.getElementById('hud-saved-fleet').innerText = `${driverProfileMemory.company} - Car #${driverProfileMemory.carNumber}`;
+            } else {
+                fieldsWrapper.style.display = 'block';
+                identityHud.style.display = 'none';
+            }
+        }
+
+        // Trigger function to handle clicking the Profile Button on the side of the map screen
+        function openFullProfileSettings() {
+            if (driverProfileMemory.isSuspended) return;
+            
+            // Set dynamic header titles and show full input areas
+            document.getElementById('profile-modal-main-title').innerText = "Edit Profile Settings";
+            
+            // Refresh drop choices arrays 
+            syncCompanyDropdownUIFields();
+            
+            // Pre-populate input values with existing active cache data values
+            document.getElementById('driver-company-select').value = driverProfileMemory.company;
+            document.getElementById('driver-car-input').value = driverProfileMemory.carNumber;
+            document.getElementById('driver-name-input').value = driverProfileMemory.displayName;
+            document.getElementById('driver-role-select').value = driverProfileMemory.role;
+            document.getElementById('driver-phone-input').value = driverProfileMemory.phoneNumber;
+            
+            // Show the inputs directly for editing access
+            document.getElementById('profile-setup-fields-wrapper').style.display = 'block';
+            document.getElementById('profile-saved-identity-hud').style.display = 'none';
+            
+            // Hide shift timer field so they focus purely on updating personal records
+            document.getElementById('shift-end-time-picker-section').style.display = 'none';
+            
+            // Transform button modes to save corrections cleanly
+            const submitBtn = document.getElementById('profile-submit-action-btn');
+            submitBtn.innerText = "Save Adjustments";
+            submitBtn.setAttribute('onclick', 'saveProfileAdjustmentsDirectly()');
+            
+            document.getElementById('profile-close-action-btn').style.display = 'block';
+            
+            showModal('shift-scheduler-pop');
+        }
+
+        function forceExpandProfileEditor() {
+            document.getElementById('profile-setup-fields-wrapper').style.display = 'block';
+            document.getElementById('profile-saved-identity-hud').style.display = 'none';
+        }
+
+        // Save modifications from a mid-shift profile adjustment action
+        function saveProfileAdjustmentsDirectly() {
+            const companyVal = document.getElementById('driver-company-select').value.trim();
+            const carVal = document.getElementById('driver-car-input').value.trim();
+            const nameVal = document.getElementById('driver-name-input').value.trim();
+            const roleVal = document.getElementById('driver-role-select').value;
+            const phoneVal = document.getElementById('driver-phone-input').value.trim();
+            
+            if (!companyVal || companyVal === "__ADD_NEW_COMPANY__" || !carVal || !nameVal) {
+                alert("ALL PROFILE INFORMATION FIELDS ARE MANDATORY TO SECURE DRIVER ANCHOR IDENTITY.");
+                return;
+            }
+
+            // Write properties directly to memory storage cache
+            driverProfileMemory.company = companyVal;
+            driverProfileMemory.carNumber = carVal;
+            driverProfileMemory.displayName = nameVal;
+            driverProfileMemory.role = roleVal;
+            driverProfileMemory.phoneNumber = phoneVal;
+            
+            // Keep matching dashboard sync targets accurate
+            document.getElementById('match-company-target-select').value = companyVal;
+            
+            isProfileDataAnchored = true;
+            updateHudProfileTriggerButtonLabel();
+
+            // Refresh marker visuals dynamically
+            if (vehicleMarker && vehiclePos) {
+                map.removeLayer(vehicleMarker);
+                vehicleMarker = L.marker(vehiclePos, { icon: generateDynamicTaxiIcon() }).addTo(map);
+            }
+
+            hideModals();
+            alert("SUCCESS: Your profile registry identity configurations have been live adjusted!");
+        }
 
         // =========================================================================================
         // AUTO-HIDING ZOOM INTERACTION ENGINE
@@ -487,25 +780,38 @@
         // AUTOMATED SHIFT SCHEDULER CONTROLLER ENGINE
         // =========================================================================================
         function initializeDriverShiftTimer() {
-            const companyVal = document.getElementById('driver-company-input').value.trim();
-            const carVal = document.getElementById('driver-car-input').value.trim();
-            const nameVal = document.getElementById('driver-name-input').value.trim();
-            const timeInputValue = document.getElementById('shift-end-time-input').value;
-            
-            if (!companyVal || !carVal || !nameVal) {
-                alert("ALL PROFILE INFORMATION FIELDS ARE MANDATORY TO SECURE DRIVER ANCHOR IDENTITY.");
-                return;
+            // Read fields only if they are visible/active
+            if (!isProfileDataAnchored) {
+                const companyVal = document.getElementById('driver-company-select').value.trim();
+                const carVal = document.getElementById('driver-car-input').value.trim();
+                const nameVal = document.getElementById('driver-name-input').value.trim();
+                const roleVal = document.getElementById('driver-role-select').value;
+                const phoneVal = document.getElementById('driver-phone-input').value.trim();
+                
+                if (!companyVal || companyVal === "__ADD_NEW_COMPANY__" || !carVal || !nameVal) {
+                    alert("ALL PROFILE INFORMATION FIELDS ARE MANDATORY TO SECURE DRIVER ANCHOR IDENTITY.");
+                    return;
+                }
+
+                // Lock Profile Data Structures
+                driverProfileMemory.company = companyVal;
+                driverProfileMemory.carNumber = carVal;
+                driverProfileMemory.displayName = nameVal;
+                driverProfileMemory.role = roleVal;
+                driverProfileMemory.phoneNumber = phoneVal;
+                
+                // Update Matching panel prefill value dynamically
+                document.getElementById('match-company-target-select').value = companyVal;
+                
+                isProfileDataAnchored = true;
             }
+
+            const timeInputValue = document.getElementById('shift-end-time-input').value;
             if (!timeInputValue) {
                 alert("PLEASE SELECT A VALID SHIFT END TIME.");
                 return;
             }
 
-            // Lock Profile Data Structures
-            driverProfileMemory.company = companyVal;
-            driverProfileMemory.carNumber = carVal;
-            driverProfileMemory.displayName = nameVal;
-            
             // Assign Permanent Unique ID Tracking Number if missing
             if (!driverProfileMemory.uid) {
                 driverProfileMemory.uid = "DRV-" + Math.floor(100000 + Math.random() * 900000);
@@ -525,6 +831,8 @@
 
             if (shiftMonitoringInterval) clearInterval(shiftMonitoringInterval);
             shiftMonitoringInterval = setInterval(checkShiftTimeExpirationStatus, 1000);
+
+            updateHudProfileTriggerButtonLabel();
 
             // Re-render vehicle marker with dynamic contextual layout configuration updates
             if (vehicleMarker && vehiclePos) {
@@ -585,8 +893,140 @@
                 btn.innerHTML = "AUDIO<br>ON";
             }
             
+            // Re-enable scheduling view configurations setup parameters
+            document.getElementById('profile-modal-main-title').innerText = "Driver Profile Setup";
+            document.getElementById('shift-end-time-picker-section').style.display = 'block';
+            
+            const submitBtn = document.getElementById('profile-submit-action-btn');
+            submitBtn.innerText = "Go On Duty";
+            submitBtn.setAttribute('onclick', 'initializeDriverShiftTimer()');
+            
+            document.getElementById('profile-close-action-btn').style.display = 'none';
+            
+            // Force dynamic assessment of profile cache state on manual restart
+            toggleProfileModalFieldsDisplay(isProfileDataAnchored);
+            
             document.getElementById('screen-overlay').style.display = 'block';
             document.getElementById('shift-scheduler-pop').style.display = 'block';
+        }
+
+        // =========================================================================================
+        // DRIVER VEHICLE MATCHING CALENDAR ENGINE PIPELINE
+        // =========================================================================================
+        function openDriverMatchingPortal() {
+            hideModals();
+            
+            // Sync current profile variables with UI fields
+            document.getElementById('match-ui-current-role').innerText = driverProfileMemory.role.toUpperCase();
+            document.getElementById('match-ui-current-phone').innerText = driverProfileMemory.phoneNumber || "None Added (Update Profile Setup)";
+            
+            // Regenerate menu select parameters list 
+            syncCompanyDropdownUIFields();
+            document.getElementById('match-company-target-select').value = driverProfileMemory.company;
+            
+            renderMatchingBoardEntries();
+            showModal('driver-matching-pop');
+        }
+
+        function submitAvailabilityToMatchPool() {
+            // Mandate phone contact verification before accepting board entries
+            if (!driverProfileMemory.phoneNumber) {
+                alert("PHONE NUMBER IS REQUIRED IN YOUR DRIVER PROFILE SYSTEM BEFORE LOGGING CALENDAR AVAILABILITY TO SECURE BILATERAL COMMUNICATIONS.");
+                hideModals();
+                openFullProfileSettings();
+                return;
+            }
+
+            const chosenDate = document.getElementById('match-calendar-date').value;
+            const chosenShift = document.getElementById('match-calendar-shift').value;
+            const chosenCompany = document.getElementById('match-company-target-select').value;
+
+            if (!chosenDate) {
+                alert("PLEASE HIGHLIGHT A VALID TARGET DATE ON THE CALENDAR SYSTEM.");
+                return;
+            }
+            if (!chosenCompany || chosenCompany === "__ADD_NEW_COMPANY__") {
+                alert("PLEASE DECLARE A TARGET FLEET COMPANY FOR COOPERATIVE MATCH FILTERING.");
+                return;
+            }
+
+            // Construct new availability entry item matching custom company parameters
+            const newCalendarItem = {
+                id: "M-" + Math.floor(100000 + Math.random() * 900000),
+                name: driverProfileMemory.displayName,
+                role: driverProfileMemory.role,
+                company: chosenCompany,
+                carNumber: driverProfileMemory.role === "Owner" ? driverProfileMemory.carNumber : "N/A",
+                date: chosenDate,
+                shift: chosenShift,
+                phone: driverProfileMemory.phoneNumber
+            };
+
+            // Inject record entry directly into operational cache data models
+            mockSharedMatchingPool.push(newCalendarItem);
+            renderMatchingBoardEntries();
+            
+            alert(`SUCCESS: Your ${chosenShift} availability under "${chosenCompany}" for ${chosenDate} has been logged onto the shared marketplace boards!`);
+        }
+
+        function renderMatchingBoardEntries() {
+            const driversContainer = document.getElementById('matching-drivers-column-target');
+            const carsContainer = document.getElementById('matching-cars-column-target');
+            
+            driversContainer.innerHTML = "";
+            carsContainer.innerHTML = "";
+
+            const targetDate = document.getElementById('match-calendar-date').value;
+            const targetShift = document.getElementById('match-calendar-shift').value;
+            
+            // Normalize selected filter menu item value cleanly
+            const chosenCompanyVal = document.getElementById('match-company-target-select').value;
+            const targetCompanyNorm = chosenCompanyVal ? chosenCompanyVal.toLowerCase().trim() : "";
+            const myRole = driverProfileMemory.role; // "Driver" or "Owner"
+
+            let driverCount = 0;
+            let carCount = 0;
+
+            // Iterate and sort items into target dual-list arrays matching filtering requirements
+            mockSharedMatchingPool.forEach(item => {
+                if (item.date !== targetDate || item.shift !== targetShift) return;
+
+                const itemCompanyNorm = item.company.toLowerCase().trim();
+                
+                // BILATERAL DROPDOWN EXCHANGE FILTER RULE ENGINE:
+                // Match items against target filter option selection currently specified by user.
+                if (itemCompanyNorm !== targetCompanyNorm) return;
+
+                // Build Row
+                const row = document.createElement('div');
+                const isCrossRoleMatch = (item.role !== myRole);
+                row.className = "match-item-row" + (isCrossRoleMatch ? " is-perfect-match" : "");
+                
+                let matchBadgeHtml = isCrossRoleMatch ? `<span class="match-badge">Match</span>` : "";
+                let assetLabel = item.role === "Owner" ? `Car: #${item.carNumber}` : `Fleet: ${item.company}`;
+
+                row.innerHTML = `
+                    ${matchBadgeHtml}
+                    <strong>${item.name}</strong>
+                    <span style="font-size:0.72rem; color:#444;">${assetLabel}</span>
+                    <a href="tel:${item.phone}" class="match-call-btn">📞 Call</a>
+                `;
+
+                if (item.role === "Driver") {
+                    driversContainer.appendChild(row);
+                    driverCount++;
+                } else if (item.role === "Owner") {
+                    carsContainer.appendChild(row);
+                    carCount++;
+                }
+            });
+
+            if (driverCount === 0) {
+                driversContainer.innerHTML = `<div class="chat-empty-msg" style="padding-top:20px; font-size:0.75rem;">No Drivers</div>`;
+            }
+            if (carCount === 0) {
+                carsContainer.innerHTML = `<div class="chat-empty-msg" style="padding-top:20px; font-size:0.75rem;">No Cars</div>`;
+            }
         }
 
         // =========================================================================================
@@ -662,6 +1102,7 @@
             showModal('suggestion-pop');
         }
 
+        // STRICTLY FIXES ROUTING FLOW BACK TO THE UTILITY MENU
         function backToUtilityMenu(currentModalId) {
             document.getElementById(currentModalId).style.display = 'none';
             showModal('utility-menu-pop');
